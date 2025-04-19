@@ -42,4 +42,9 @@ public class LabelBuilder {
         label.setAlignment(Align.center);
         return this;
     }
+
+    public LabelBuilder noDelay() {
+        label.skipToTheEnd();
+        return this;
+    }
 }
