@@ -3,6 +3,7 @@ package com.shr4pnel.casino;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +17,9 @@ import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
+import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
+import com.shr4pnel.casino.audio.SoundEffect;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
@@ -43,6 +46,7 @@ public class Casino extends ApplicationAdapter {
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
+    private boolean hasIntroLoadSoundPlayed = false;
 
     @Override
     public void create() {
@@ -77,21 +81,31 @@ public class Casino extends ApplicationAdapter {
         rootWindow.setSize(800, 450);
         rootWindow.align(Align.top);
         topLabel = labelBuilder
-            .start("{SPEED=15}**** COMMODORE 64 BASIC V2 ****\n64K  RAM  SYSTEM  38911  BASIC  BYTES  FREE{RESET}")
+            .start("**** COMMODORE 64 BASIC V2 ****\n64K  RAM  SYSTEM  38911  BASIC  BYTES  FREE")
             .alignCenter()
+            .noDelay()
             .build();
 
         ramLabel = labelBuilder
             .start("READY.")
+            .noDelay()
             .build();
 
         middleLabel = labelBuilder
-            .start("{SLOWER}LOAD CASINO.PRG{RESET}")
+            .start("{SPEED=0.3}LOAD \"CASINO.PRG\",8{RESET}")
             .build();
 
+        middleLabel.addTypingListener(new TypingAdapter() {
+            public void end() {
+                SoundEffect.play("sound/read_alt.ogg", 0.1f);
+            }
+        });
+
         rootWindow.add(topLabel);
-        rootWindow.add().height(100).row();
+        rootWindow.add().height(50).row();
         rootWindow.add(ramLabel).left().row();
+        rootWindow.add().height(50).row();
+        rootWindow.add(middleLabel).left().row();
         stage.addActor(rootWindow);
     }
 
@@ -133,7 +147,9 @@ public class Casino extends ApplicationAdapter {
 
             switch (SceneManager.getActiveScene()) {
                 case INTRO -> {
-
+                    if (!hasIntroLoadSoundPlayed)
+                        SoundEffect.play("sound/load.ogg");
+                    hasIntroLoadSoundPlayed = true;
                     ScreenUtils.clear(Color.BLACK);
                     stage.act(Gdx.graphics.getDeltaTime());
                     stage.draw();
