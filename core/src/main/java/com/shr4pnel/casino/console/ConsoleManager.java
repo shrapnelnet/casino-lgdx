@@ -31,4 +31,10 @@ public class ConsoleManager {
     public CommandExecutor getExecutor() {
         return executor;
     }
+
+    public void reinit() {
+        console = new GUIConsole();
+        console.setDisplayKeyID(Input.Keys.GRAVE);
+        console.setCommandExecutor(executor);
+    }
 }
