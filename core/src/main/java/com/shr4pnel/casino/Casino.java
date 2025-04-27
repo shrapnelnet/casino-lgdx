@@ -12,21 +12,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
-import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
+
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
+
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
+import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
@@ -49,6 +48,7 @@ public class Casino extends ApplicationAdapter {
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
+    private TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
 
     @Override
     public void create() {
@@ -65,6 +65,8 @@ public class Casino extends ApplicationAdapter {
 
         // post processing
         initialPostProcess();
+
+        SoundEffectHelper.preload();
 
         // todo view in seperate file
         rootWindow = new Window("", skin);
@@ -85,21 +87,7 @@ public class Casino extends ApplicationAdapter {
             .start("{SPEED=0.3}LOAD \"CASINO.PRG\",8{RESET}")
             .build();
 
-        middleLabel.addTypingListener(new TypingAdapter() {
-            long id;
-            ScheduledExecutorService executorService;
-
-            public void end() {
-                id = SoundEffectHelper.playWithID("sound/read_alt.ogg", 0.1f);
-                executorService = Executors.newSingleThreadScheduledExecutor();
-                executorService.schedule(this::endSound, 5, TimeUnit.SECONDS);
-            }
-
-            private void endSound() {
-                SoundEffectHelper.cancel(id);
-                executorService.close();
-            }
-        });
+        middleLabel.addTypingListener(typingAdapterBuilder.setSound("sound/read_alt.ogg", 0.1f).build());
 
         rootWindow.add(topLabel);
         rootWindow.add().height(50).row();
@@ -150,6 +138,7 @@ public class Casino extends ApplicationAdapter {
         vfxManager.dispose();
         crtEffect.dispose();
         filmGrainEffect.dispose();
+        SoundEffectHelper.dispose();
     }
 
     @Override
