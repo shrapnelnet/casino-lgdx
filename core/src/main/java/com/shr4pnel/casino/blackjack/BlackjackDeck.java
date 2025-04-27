@@ -10,7 +10,7 @@ public class BlackjackDeck extends Deck {
             int currentSuitIndex = Math.floorDiv(i, 13);
             // this index goes up each iteration, then resets to 0 every 13 iterations
             int currentTypeValueIndex = i % 13;
-            Card card = new Card(suitList[currentSuitIndex], cardValueList[currentTypeValueIndex], cardTypeList[currentTypeValueIndex], Card.AceRules.ACES_HIGH_OR_LOW);
+            Card card = new BlackjackCard(suitList[currentSuitIndex], cardValueList[currentTypeValueIndex], cardTypeList[currentTypeValueIndex]);
             cards.add(card);
         }
         shuffle();
