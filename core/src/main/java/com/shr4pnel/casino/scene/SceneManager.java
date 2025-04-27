@@ -15,11 +15,13 @@ public class SceneManager {
         sceneToPrettyName.put(scene.INTRO, "Intro");
         sceneToPrettyName.put(scene.BLACKJACK, "Blackjack");
         sceneToPrettyName.put(scene.POKER, "Poker");
+        sceneToPrettyName.put(scene.MENU, "Menu");
 
         prettyNameToScene = new HashMap<>();
         prettyNameToScene.put("intro", scene.INTRO);
         prettyNameToScene.put("blackjack", scene.BLACKJACK);
         prettyNameToScene.put("poker", scene.POKER);
+        prettyNameToScene.put("menu", scene.MENU);
     }
 
     public static scene getActiveScene() {
@@ -42,6 +44,7 @@ public class SceneManager {
     public enum scene {
         INTRO,
         BLACKJACK,
-        POKER
+        POKER,
+        MENU
     }
 }
