@@ -4,10 +4,11 @@ import com.badlogic.gdx.Input;
 import com.strongjoshua.console.CommandExecutor;
 import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
+import com.strongjoshua.console.LogLevel;
 
 public class ConsoleManager {
-    private Console console = new GUIConsole();
-    private ConsoleExecutor executor = new ConsoleExecutor();
+    private final Console console = new GUIConsole();
+    private final ConsoleExecutor executor = new ConsoleExecutor();
 
     public ConsoleManager(boolean enabled) {
         console.setCommandExecutor(executor);
@@ -32,9 +33,23 @@ public class ConsoleManager {
         return executor;
     }
 
-    public void reinit() {
-        console = new GUIConsole();
-        console.setDisplayKeyID(Input.Keys.GRAVE);
-        console.setCommandExecutor(executor);
+    public void draw() {
+        console.draw();
+    }
+
+    public void log(String msg) {
+        console.log(msg);
+    }
+
+    public void log(Throwable err) {
+        console.log(err);
+    }
+
+    public void log(String msg, LogLevel lvl) {
+        console.log(msg, lvl);
+    }
+
+    public void log(Throwable err, LogLevel lvl) {
+        console.log(err, lvl);
     }
 }
