@@ -3,7 +3,6 @@ package com.shr4pnel.casino;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -96,8 +95,18 @@ public class Casino extends ApplicationAdapter {
             .build();
 
         middleLabel.addTypingListener(new TypingAdapter() {
+            long id;
+            ScheduledExecutorService executorService;
+
             public void end() {
-                SoundEffect.play("sound/read_alt.ogg", 0.1f);
+                id = SoundEffectHelper.playWithID("sound/read_alt.ogg", 0.1f);
+                executorService = Executors.newSingleThreadScheduledExecutor();
+                executorService.schedule(this::endSound, 5, TimeUnit.SECONDS);
+            }
+
+            private void endSound() {
+                SoundEffectHelper.cancel(id);
+                executorService.close();
             }
         });
 
@@ -176,5 +185,24 @@ public class Casino extends ApplicationAdapter {
         vfxManager.endInputCapture();
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
+    }
+
+    private void renderIntro() {
+        if (!hasIntroLoadSoundPlayed)
+            SoundEffectHelper.play("sound/load.ogg");
+        hasIntroLoadSoundPlayed = true;
+        ScreenUtils.clear(Color.BLACK);
+        introStage.act(Gdx.graphics.getDeltaTime());
+        introStage.draw();
+    }
+
+    private void renderBlackjack() {
+        batch.begin();
+        ScreenUtils.clear(Color.BLACK);
+        float maxWidth = viewport.getWorldWidth();
+        float maxHeight = viewport.getWorldHeight();
+        batch.draw(background, 0, 0, maxWidth, maxHeight);
+        batch.draw(button, 50, 50, 25, 25);
+        batch.end();
     }
 }
