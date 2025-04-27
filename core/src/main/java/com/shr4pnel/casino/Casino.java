@@ -18,6 +18,7 @@ import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 
+import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.audio.SoundEffectHelper;
@@ -26,6 +27,8 @@ import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
+
+// if you're lost, what you're looking for is probably in here ;)
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
@@ -39,8 +42,8 @@ public class Casino extends ApplicationAdapter {
     private boolean assetsLoaded = false;
     private StyleManager styleManager;
     private Skin skin;
-    private Stage introStage;
-    private TypingLabel topLabel, ramLabel, middleLabel;
+    private Stage introStage, menuStage;
+    private TypingLabel topLabel, readyLabel, middleLabel, ellipsisLabel, asciiLabel;
     private Window rootWindow;
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
@@ -56,6 +59,7 @@ public class Casino extends ApplicationAdapter {
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
         introStage = new Stage(viewport);
+        menuStage = new Stage(viewport);
 
         // enqueue assets for loading
         queueAssets();
@@ -78,7 +82,7 @@ public class Casino extends ApplicationAdapter {
             .noDelay()
             .build();
 
-        ramLabel = labelBuilder
+        readyLabel = labelBuilder
             .start("READY.")
             .noDelay()
             .build();
@@ -87,14 +91,38 @@ public class Casino extends ApplicationAdapter {
             .start("{SPEED=0.3}LOAD \"CASINO.PRG\",8{RESET}")
             .build();
 
-        middleLabel.addTypingListener(typingAdapterBuilder.setSound("sound/read_alt.ogg", 0.1f).build());
+        ellipsisLabel = labelBuilder
+            .start(".{WAIT}.{WAIT}.{WAIT}{EVENT=start_art}")
+            .build();
 
-        rootWindow.add(topLabel);
-        rootWindow.add().height(50).row();
-        rootWindow.add(ramLabel).left().row();
-        rootWindow.add().height(50).row();
+        TypingAdapter ellipsisLabelTypingAdapter = typingAdapterBuilder
+            .addEvent("start_art")
+            .delay(125)
+            .build();
+
+        ellipsisLabel.addTypingListener(ellipsisLabelTypingAdapter);
+
+        TypingAdapter middleLabelTypingAdapter = typingAdapterBuilder
+            .setSound("sound/read_alt.ogg", 0.1f)
+            .chainTypingLabel(ellipsisLabel, rootWindow)
+            .delay(2000)
+            .dontStopSound()
+            .build();
+
+        middleLabel.addTypingListener(middleLabelTypingAdapter);
+
+        rootWindow.add(topLabel).height(50).row();
+        rootWindow.add(readyLabel).left().row();
+        rootWindow.add().height(8).row();
         rootWindow.add(middleLabel).left().row();
+        rootWindow.add().height(8).row();
         introStage.addActor(rootWindow);
+
+        asciiLabel = labelBuilder
+            .start("test")
+            .build();
+
+        menuStage.addActor(asciiLabel);
     }
 
     private void queueAssets() {
@@ -155,6 +183,7 @@ public class Casino extends ApplicationAdapter {
             switch (SceneManager.getActiveScene()) {
                 case INTRO -> renderIntro();
                 case BLACKJACK -> renderBlackjack();
+                case MENU -> renderMenu();
             }
         }
     }
@@ -187,5 +216,11 @@ public class Casino extends ApplicationAdapter {
         batch.draw(background, 0, 0, maxWidth, maxHeight);
         batch.draw(button, 50, 50, 25, 25);
         batch.end();
+    }
+
+    private void renderMenu() {
+        ScreenUtils.clear(Color.BLACK);
+        menuStage.act(Gdx.graphics.getDeltaTime());
+        menuStage.draw();
     }
 }
