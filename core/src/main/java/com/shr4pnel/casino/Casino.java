@@ -18,27 +18,30 @@ import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-import com.shr4pnel.casino.audio.SoundEffect;
+import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
+ */
 public class Casino extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Texture background;
+    private Texture background, button;
     private FitViewport viewport;
-    private Texture button;
     private ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
     private boolean assetsLoaded = false;
     private StyleManager styleManager;
     private Skin skin;
-    private Stage stage;
-    private TypingLabel topLabel;
-    private TypingLabel ramLabel;
-    private TypingLabel middleLabel;
+    private Stage introStage;
+    private TypingLabel topLabel, ramLabel, middleLabel;
     private Window rootWindow;
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
@@ -52,28 +55,16 @@ public class Casino extends ApplicationAdapter {
         batch = new SpriteBatch();
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
-        stage = new Stage(viewport);
+        introStage = new Stage(viewport);
 
         // enqueue assets for loading
-        assetManager.load("bg/backdrop.png", Texture.class);
-        assetManager.load("buttons/blackjack.jpg", Texture.class);
+        queueAssets();
 
         // get active skin
         skin = StyleManager.getSkin();
 
         // post processing
-        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
-        crtEffect = new CrtEffect();
-        filmGrainEffect = new FilmGrainEffect();
-        gaussianBlurEffect = new GaussianBlurEffect();
-        vfxManager.addEffect(gaussianBlurEffect);
-        vfxManager.addEffect(crtEffect);
-
-        // todo fix input processing in intro (console has method for this)
-        if (SceneManager.getActiveScene() == SceneManager.scene.INTRO) {
-            Gdx.input.setInputProcessor(stage);
-            console.getConsole().resetInputProcessing();
-        }
+        initialPostProcess();
 
         // todo view in seperate file
         rootWindow = new Window("", skin);
@@ -115,22 +106,40 @@ public class Casino extends ApplicationAdapter {
         rootWindow.add(ramLabel).left().row();
         rootWindow.add().height(50).row();
         rootWindow.add(middleLabel).left().row();
-        stage.addActor(rootWindow);
+        introStage.addActor(rootWindow);
+    }
+
+    private void queueAssets() {
+        assetManager.load("bg/backdrop.png", Texture.class);
+        assetManager.load("buttons/blackjack.jpg", Texture.class);
+    }
+
+    private void initialPostProcess() {
+        vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
+        crtEffect = new CrtEffect();
+        filmGrainEffect = new FilmGrainEffect();
+        gaussianBlurEffect = new GaussianBlurEffect();
+        vfxManager.addEffect(gaussianBlurEffect);
+        vfxManager.addEffect(crtEffect);
     }
 
     @Override
     public void render() {
-        if (!assetsLoaded && assetManager.update()) {
-            background = assetManager.get("bg/backdrop.png", Texture.class);
-            button = assetManager.get("buttons/blackjack.jpg", Texture.class);
-            assetsLoaded = true;
-            console.getConsole().log("Asset loading complete");
-        }
+        if (!assetsLoaded && assetManager.update())
+            initialRenderAssets();
 
         startPostProcessing();
         draw();
         renderPostProcessing();
-        console.getConsole().draw();
+        // console always drawn on top
+        console.draw();
+    }
+
+    private void initialRenderAssets() {
+        background = assetManager.get("bg/backdrop.png", Texture.class);
+        button = assetManager.get("buttons/blackjack.jpg", Texture.class);
+        assetsLoaded = true;
+        console.getConsole().log("Asset loading complete");
     }
 
     @Override
@@ -155,23 +164,8 @@ public class Casino extends ApplicationAdapter {
             viewport.apply();
 
             switch (SceneManager.getActiveScene()) {
-                case INTRO -> {
-                    if (!hasIntroLoadSoundPlayed)
-                        SoundEffect.play("sound/load.ogg");
-                    hasIntroLoadSoundPlayed = true;
-                    ScreenUtils.clear(Color.BLACK);
-                    stage.act(Gdx.graphics.getDeltaTime());
-                    stage.draw();
-                }
-                case BLACKJACK -> {
-                    batch.begin();
-                    ScreenUtils.clear(Color.BLACK);
-                    float maxWidth = viewport.getWorldWidth();
-                    float maxHeight = viewport.getWorldHeight();
-                    batch.draw(background, 0, 0, maxWidth, maxHeight);
-                    batch.draw(button, 50, 50, 25, 25);
-                    batch.end();
-                }
+                case INTRO -> renderIntro();
+                case BLACKJACK -> renderBlackjack();
             }
         }
     }
