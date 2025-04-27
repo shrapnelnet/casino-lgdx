@@ -25,8 +25,5 @@ public class BlackjackGame {
      */
     public void hit() {
         player.add(deck.drawCard());
-        player.add(deck.drawCard());
-        player.add(deck.drawCard());
-        player.add(deck.drawCard());
     }
 }
