@@ -1,6 +1,6 @@
 package com.shr4pnel.casino.scene;
 
-import com.strongjoshua.console.Console;
+import com.shr4pnel.casino.audio.SoundEffectHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +29,9 @@ public class SceneManager {
     }
 
     public static void setActiveScene(scene activeScene) {
+        switch (activeScene) {
+            case MENU, BLACKJACK -> SoundEffectHelper.stopAll();
+        }
         SceneManager.activeScene = activeScene;
     }
 
