@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -18,15 +17,14 @@ import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 
-import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
-import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
+import com.shr4pnel.casino.views.Intro;
 
 // if you're lost, what you're looking for is probably in here ;)
 
@@ -41,17 +39,15 @@ public class Casino extends ApplicationAdapter {
     private final AssetManager assetManager = new AssetManager();
     private boolean assetsLoaded = false;
     private StyleManager styleManager;
-    private Skin skin;
     private Stage introStage, menuStage;
-    private TypingLabel topLabel, readyLabel, middleLabel, ellipsisLabel, asciiLabel;
-    private Window rootWindow;
+    private TypingLabel asciiLabel;
+    private Window introRoot;
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
 
     @Override
     public void create() {
@@ -64,59 +60,14 @@ public class Casino extends ApplicationAdapter {
         // enqueue assets for loading
         queueAssets();
 
-        // get active skin
-        skin = StyleManager.getSkin();
-
         // post processing
         initialPostProcess();
 
         SoundEffectHelper.preload();
 
-        // todo view in seperate file
-        rootWindow = new Window("", skin);
-        rootWindow.setSize(800, 450);
-        rootWindow.align(Align.top);
-        topLabel = labelBuilder
-            .start("**** COMMODORE 64 BASIC V2 ****\n64K  RAM  SYSTEM  38911  BASIC  BYTES  FREE")
-            .alignCenter()
-            .noDelay()
-            .build();
-
-        readyLabel = labelBuilder
-            .start("READY.")
-            .noDelay()
-            .build();
-
-        middleLabel = labelBuilder
-            .start("{SPEED=0.3}LOAD \"CASINO.PRG\",8{RESET}")
-            .build();
-
-        ellipsisLabel = labelBuilder
-            .start(".{WAIT}.{WAIT}.{WAIT}{EVENT=start_art}")
-            .build();
-
-        TypingAdapter ellipsisLabelTypingAdapter = typingAdapterBuilder
-            .addEvent("start_art")
-            .delay(125)
-            .build();
-
-        ellipsisLabel.addTypingListener(ellipsisLabelTypingAdapter);
-
-        TypingAdapter middleLabelTypingAdapter = typingAdapterBuilder
-            .setSound("sound/read_alt.ogg", 0.1f)
-            .chainTypingLabel(ellipsisLabel, rootWindow)
-            .delay(2000)
-            .dontStopSound()
-            .build();
-
-        middleLabel.addTypingListener(middleLabelTypingAdapter);
-
-        rootWindow.add(topLabel).height(50).row();
-        rootWindow.add(readyLabel).left().row();
-        rootWindow.add().height(8).row();
-        rootWindow.add(middleLabel).left().row();
-        rootWindow.add().height(8).row();
-        introStage.addActor(rootWindow);
+        // load intro scene2d markup
+        introRoot = Intro.get();
+        introStage.addActor(introRoot);
 
         asciiLabel = labelBuilder
             .start("test")
@@ -147,7 +98,7 @@ public class Casino extends ApplicationAdapter {
         startPostProcessing();
         draw();
         renderPostProcessing();
-        // console always drawn on top
+        // console always drawn on top, outside of post-processing (easier to read without effects, the text is small!)
         console.draw();
     }
 
