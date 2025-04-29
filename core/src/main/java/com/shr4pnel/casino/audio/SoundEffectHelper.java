@@ -108,4 +108,10 @@ public class SoundEffectHelper {
             loadedSounds.put(path, sound);
         }
     }
+
+    public static void stopAll() {
+        for (Sound s: loadedSounds.values()) {
+            s.stop();
+        }
+    }
 }
