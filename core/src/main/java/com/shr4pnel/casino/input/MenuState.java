@@ -1,10 +1,11 @@
 package com.shr4pnel.casino.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.shr4pnel.casino.views.Menu;
 
-public class MenuInputState {
+public class MenuState {
     private static ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
     private static TextButton activeButton;
 
@@ -13,7 +14,7 @@ public class MenuInputState {
     }
 
     public static void setActiveButton(TextButton activeButton) {
-        MenuInputState.activeButton = activeButton;
+        MenuState.activeButton = activeButton;
     }
 
     public static void setMenuButtonGroup(ButtonGroup<TextButton> buttonGroup) {
@@ -61,16 +62,29 @@ public class MenuInputState {
     }
 
     public static boolean left() {
-        TextButton nextButton = MenuInputState.getLeftToggledButton();
-        MenuInputState.setActiveButton(nextButton);
+        TextButton nextButton = MenuState.getLeftToggledButton();
+        MenuState.setActiveButton(nextButton);
         Menu.updateActiveButton();
         return true;
     }
 
     public static boolean right() {
-        TextButton nextButton = MenuInputState.getRightToggledButton();
-        MenuInputState.setActiveButton(nextButton);
+        TextButton nextButton = MenuState.getRightToggledButton();
+        MenuState.setActiveButton(nextButton);
         Menu.updateActiveButton();
         return true;
+    }
+
+    public static boolean enter() {
+        TextButton activeButton = getActiveButton();
+        return switch (activeButton.getName()) {
+            case "Play" -> true;
+            case "Quit" -> {
+                Gdx.app.exit();
+                yield false;
+            }
+            case "Settings" -> true;
+            default -> false;
+        };
     }
 }
