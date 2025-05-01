@@ -17,30 +17,29 @@ import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 
-import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.views.Intro;
+import com.shr4pnel.casino.views.Menu;
 
 // if you're lost, what you're looking for is probably in here ;)
 
 /**
+ * Application entry point
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
 public class Casino extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture background, button;
     private FitViewport viewport;
-    private ConsoleManager console;
+    private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
     private boolean assetsLoaded = false;
     private StyleManager styleManager;
     private Stage introStage, menuStage;
-    private TypingLabel asciiLabel;
     private Window introRoot;
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
@@ -48,12 +47,14 @@ public class Casino extends ApplicationAdapter {
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
+    private Table menuRoot;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
+
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
 
@@ -63,17 +64,16 @@ public class Casino extends ApplicationAdapter {
         // post processing
         initialPostProcess();
 
+        // preload all audio files in assets/sound
         SoundEffectHelper.preload();
 
         // load intro scene2d markup
         introRoot = Intro.get();
         introStage.addActor(introRoot);
 
-        asciiLabel = labelBuilder
-            .start("test")
-            .build();
-
-        menuStage.addActor(asciiLabel);
+        // load menu scene2d markup
+        menuRoot = Menu.get();
+        menuStage.addActor(menuRoot);
     }
 
     private void queueAssets() {
@@ -124,6 +124,7 @@ public class Casino extends ApplicationAdapter {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         vfxManager.resize(width, height);
+        console = new ConsoleManager();
     }
 
     private void draw() {
@@ -140,11 +141,15 @@ public class Casino extends ApplicationAdapter {
     }
 
     private void startPostProcessing() {
+        if (StyleManager.getPostProcessingDisabled())
+            return;
         vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
     }
 
     private void renderPostProcessing() {
+        if (StyleManager.getPostProcessingDisabled())
+            return;
         vfxManager.endInputCapture();
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
@@ -173,5 +178,9 @@ public class Casino extends ApplicationAdapter {
         ScreenUtils.clear(Color.BLACK);
         menuStage.act(Gdx.graphics.getDeltaTime());
         menuStage.draw();
+    }
+
+    public static ConsoleManager getActiveConsole() {
+        return console;
     }
 }
