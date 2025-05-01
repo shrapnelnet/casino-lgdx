@@ -52,4 +52,8 @@ public class ConsoleManager {
     public void log(Throwable err, LogLevel lvl) {
         console.log(err, lvl);
     }
+
+    public void reset() {
+        console.resetInputProcessing();
+    }
 }
