@@ -67,22 +67,20 @@ public class TypingAdapterBuilder {
         path = null;
         vol = 1f;
 
-        // time wasted here so far: 2 hours (fixing stupid scheduled thread executor bullshit)
         return new TypingAdapter() {
             @Override
             public void end() {
                 sound.play();
+                // If this isn't on its own thread, it'll block the rendering loop and crash the application
                 new Thread(() -> {
                     try {
                         Thread.sleep(delayMillis);
-
                         if (stopSound)
                             endSound();
 
                         if (root != null && labelToAdd != null) {
                             root.add(labelToAdd).left().height(height).row();
                         }
-
 
                     } catch (InterruptedException e) {
                         Gdx.app.log("TypingAdapterBuilder", "Interrupted while waiting on thread in build()", e);
@@ -94,6 +92,9 @@ public class TypingAdapterBuilder {
                 sound.cancel();
             }
 
+            /*
+            TODO hacky!!! fix!!!! this only fires once and isn't extendable easily
+             */
             @Override
             public void event(String event) {
                 if (eventName.equals("start_art")) {
