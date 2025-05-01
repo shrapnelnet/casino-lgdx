@@ -9,30 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SceneManager {
-    private static scene activeScene;
-    private static final Map<scene, String> sceneToPrettyName;
-    private static final Map<String, scene> prettyNameToScene;
+    private static Scene activeScene;
+    private static final Map<Scene, String> sceneToPrettyName;
+    private static final Map<String, Scene> prettyNameToScene;
 
     static {
         sceneToPrettyName = new HashMap<>();
-        sceneToPrettyName.put(scene.INTRO, "Intro");
-        sceneToPrettyName.put(scene.BLACKJACK, "Blackjack");
-        sceneToPrettyName.put(scene.POKER, "Poker");
-        sceneToPrettyName.put(scene.MENU, "Menu");
+        sceneToPrettyName.put(Scene.INTRO, "Intro");
+        sceneToPrettyName.put(Scene.BLACKJACK, "Blackjack");
+        sceneToPrettyName.put(Scene.POKER, "Poker");
+        sceneToPrettyName.put(Scene.MENU, "Menu");
 
         prettyNameToScene = new HashMap<>();
-        prettyNameToScene.put("intro", scene.INTRO);
-        prettyNameToScene.put("blackjack", scene.BLACKJACK);
-        prettyNameToScene.put("poker", scene.POKER);
-        prettyNameToScene.put("menu", scene.MENU);
-        setActiveScene(scene.MENU);
+        prettyNameToScene.put("intro", Scene.INTRO);
+        prettyNameToScene.put("blackjack", Scene.BLACKJACK);
+        prettyNameToScene.put("poker", Scene.POKER);
+        prettyNameToScene.put("menu", Scene.MENU);
+        setActiveScene(Scene.MENU);
     }
 
-    public static scene getActiveScene() {
+    public static Scene getActiveScene() {
         return activeScene;
     }
 
-    public static void setActiveScene(scene activeScene) {
+    public static void setActiveScene(Scene activeScene) {
         switch (activeScene) {
             case MENU -> {
                 SoundEffectHelper.stopAll();
@@ -49,12 +49,12 @@ public class SceneManager {
         return sceneToPrettyName.get(activeScene);
     }
 
-    public static scene getSceneAsEnum(String prettyName) {
+    public static Scene getSceneAsEnum(String prettyName) {
         prettyName = prettyName.toLowerCase();
         return prettyNameToScene.get(prettyName);
     }
 
-    public enum scene {
+    public enum Scene {
         INTRO,
         BLACKJACK,
         POKER,

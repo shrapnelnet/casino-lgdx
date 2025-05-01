@@ -114,7 +114,7 @@ public class TypingAdapterBuilder {
                             Gdx.app.log("TypingAdapterBuilder", "Interrupted while waiting on thread in event()", e);
                         }
                         root.clear();
-                        SceneManager.setActiveScene(SceneManager.scene.MENU);
+                        SceneManager.setActiveScene(SceneManager.Scene.MENU);
                     }).start();
                 }
             }
