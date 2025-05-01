@@ -1,33 +1,63 @@
 # casino-gdx
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+## Structure
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+`assets/`
 
-## Platforms
+Project assets: textures, skins, audio etc.
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
+`lwjgl3/`
 
-## Gradle
+Desktop platform specific implementation details. Mostly boilerplate for compatibility with older systems, or older Java versions.
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+`core/`
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+Platform independent logic, rendering code, event loop
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+`core/src/main/java/com/shr4pnel/casino`
+
+The main package, where the bulk of the code is located.
+
+`com.shr4pnel.casino.audio`
+
+Helpers for playing sounds on the fly
+
+Can also hold a reference to the sound, leaving options open for later muting, cancellation or later playback of the sound.
+
+`com.shr4pnel.casino.base`
+
+Base classes, extended by different card games to make global changes easier later on
+
+`com.shr4pnel.casino.blackjack`
+
+Base class extensions for blackjack, as well as a class for game logic.
+
+`com.shr4pnel.casino.builders`
+
+Builder classes, to abstract away creation of classes with complex constructors.
+
+`com.shr4pnel.casino.console`
+
+Classes relating to the GUI console, which can be used to modify internal game state for debugging, as well as quickly fetching certain important states without needing to debug.
+
+`com.shr4pnel.casino.scene`
+
+Classes which handle state relating to the current active scene
+
+`com.shr4pnel.casino.style`
+
+Classes which handle initialisation and rendering of Scene2D.ui skins
+
+`com.shr4pnel.casino.util`
+
+Classes that don't fit anywhere else, temporary subpackage unless it gets larger
+
+`com.shr4pnel.casino.views`
+
+Classes that return the Scene2d.ui markup for views that don't render directly through openGL i.e. menu, intro
+
+## Usage
+
+The gradle wrapper can be used to build this project without having Java or a build system installed.
+
+`./gradlew run`
