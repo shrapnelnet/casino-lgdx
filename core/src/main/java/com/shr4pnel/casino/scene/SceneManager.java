@@ -3,6 +3,7 @@ package com.shr4pnel.casino.scene;
 import com.badlogic.gdx.Gdx;
 import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
+import com.shr4pnel.casino.input.BlackjackInputProcessor;
 import com.shr4pnel.casino.input.MenuInputProcessor;
 
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class SceneManager {
         prettyNameToScene.put("blackjack", Scene.BLACKJACK);
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
-        setActiveScene(Scene.MENU);
+        setActiveScene(Scene.BLACKJACK);
     }
 
     public static Scene getActiveScene() {
@@ -40,7 +41,11 @@ public class SceneManager {
                 Gdx.input.setInputProcessor(new MenuInputProcessor());
                 Casino.getActiveConsole().reset();
             }
-            case BLACKJACK -> SoundEffectHelper.stopAll();
+            case BLACKJACK -> {
+                SoundEffectHelper.stopAll();
+                Gdx.input.setInputProcessor(new BlackjackInputProcessor());
+                Casino.getActiveConsole().reset();
+            }
         }
         SceneManager.activeScene = activeScene;
     }
