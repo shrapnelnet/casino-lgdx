@@ -3,15 +3,21 @@ package com.shr4pnel.casino.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.shr4pnel.casino.scene.Menu;
 import com.shr4pnel.casino.scene.SceneManager;
 
 public class ButtonGroupManager {
-    private ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
+    private final ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
     private TextButton activeButton;
+    private ButtonGroupListener listener;
 
     public ButtonGroupManager(TextButton... t) {
+        setMenuButtonGroup(t);
+    }
+
+    public void setMenuButtonGroup(TextButton... t) {
         menuButtonGroup.add(t);
+        // bugfix: no active button is set if we don't call setActiveButton at construction time (CTD)
+        setActiveButton(menuButtonGroup.getChecked());
     }
 
     public TextButton getActiveButton() {
@@ -20,18 +26,9 @@ public class ButtonGroupManager {
 
     public void setActiveButton(TextButton activeButton) {
         this.activeButton = activeButton;
-    }
-
-    public void setMenuButtonGroup(ButtonGroup<TextButton> buttonGroup) {
-        if (menuButtonGroup != null) {
-            menuButtonGroup.clear();
-        }
-
-        for (TextButton b : buttonGroup.getButtons()) {
-            menuButtonGroup.add(b);
-        }
-
-        setActiveButton(menuButtonGroup.getChecked());
+        menuButtonGroup.setChecked(activeButton.getName());
+        if (listener != null)
+            listener.onChange(activeButton);
     }
 
     private TextButton getLeftToggledButton() {
@@ -69,14 +66,12 @@ public class ButtonGroupManager {
     public boolean left() {
         TextButton nextButton = getLeftToggledButton();
         setActiveButton(nextButton);
-        Menu.updateActiveButton();
         return true;
     }
 
     public boolean right() {
         TextButton nextButton = getRightToggledButton();
         setActiveButton(nextButton);
-        Menu.updateActiveButton();
         return true;
     }
 
@@ -89,11 +84,14 @@ public class ButtonGroupManager {
             }
             case "Quit" -> {
                 Gdx.app.exit();
-                yield false;
+                yield true;
             }
             case "Settings" -> true;
             default -> false;
         };
     }
 
+    public void setListener(ButtonGroupListener listener) {
+        this.listener = listener;
+    }
 }
