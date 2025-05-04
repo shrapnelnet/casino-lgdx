@@ -65,7 +65,7 @@ public class TypingAdapterBuilder {
         final SoundEffect sound = SoundEffectHelper.build(localPath, localVol);
 
         path = null;
-        vol = 1f;
+        vol = 1;
 
         return new TypingAdapter() {
             @Override
@@ -94,6 +94,7 @@ public class TypingAdapterBuilder {
 
             /*
             TODO hacky!!! fix!!!! this only fires once and isn't extendable easily
+            note: this is fine if we need to process more events but this is doubtful
              */
             @Override
             public void event(String event) {
@@ -109,7 +110,7 @@ public class TypingAdapterBuilder {
                             }
                         }
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(750);
                         } catch (InterruptedException e) {
                             Gdx.app.log("TypingAdapterBuilder", "Interrupted while waiting on thread in event()", e);
                         }
