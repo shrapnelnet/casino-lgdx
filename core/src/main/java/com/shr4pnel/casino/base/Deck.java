@@ -24,15 +24,12 @@ public abstract class Deck {
 
     public Card[] drawCards(int n) {
         List<Card> subCards = new ArrayList<>();
-        if (n <= 1) {
+        if (n < 1 || n > cards.size())
             return null;
-        }
-        if (n > cards.size()) {
-            return null;
-        }
-        for (int i = 0; i < n; ++i) {
+
+        for (int i = 0; i < n; ++i)
             subCards.add(cards.pop());
-        }
+
         return subCards.toArray(Card[]::new);
     }
 
