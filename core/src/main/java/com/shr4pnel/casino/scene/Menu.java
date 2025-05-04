@@ -8,14 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.builders.LabelBuilder;
-import com.shr4pnel.casino.input.MenuController;
 import com.shr4pnel.casino.style.StyleManager;
+import com.shr4pnel.casino.util.ButtonGroupManager;
 
 public class Menu {
     private static final LabelBuilder labelBuilder = new LabelBuilder();
     private static TextButton play, settings, quit;
     private static TypingLabel label;
     private static ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
+    private static ButtonGroupManager buttonGroupManager;
+
 
     public static Table get() {
         Table root = new Table(StyleManager.getSkin());
@@ -37,13 +39,8 @@ public class Menu {
         textButtonGroup.add(play, settings, quit);
         textButtonGroup.setMaxCheckCount(1);
         textButtonGroup.setMinCheckCount(1);
-        MenuController.setMenuButtonGroup(textButtonGroup);
-
-        play.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                return;
-            }
-        });
+        buttonGroupManager = new ButtonGroupManager(play, settings, quit);
+        buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
 
         labelRoot.add(label).center();
         root.background("window");
@@ -59,8 +56,7 @@ public class Menu {
         return root;
     }
 
-    public static void updateActiveButton() {
-        textButtonGroup.uncheckAll();
-        textButtonGroup.setChecked(MenuController.getActiveButton().getName());
+    public static ButtonGroupManager getButtonGroupManager() {
+        return buttonGroupManager;
     }
 }
