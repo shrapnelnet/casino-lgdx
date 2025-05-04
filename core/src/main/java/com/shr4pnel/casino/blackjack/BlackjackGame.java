@@ -5,8 +5,17 @@ import com.shr4pnel.casino.base.Player;
 
 public class BlackjackGame {
     private BlackjackPlayer player = new BlackjackPlayer(true);
-    private Player ai = new BlackjackPlayer(false);
+    private BlackjackPlayer ai = new BlackjackPlayer(false);
     private Deck deck = new BlackjackDeck();
+    private BlackjackPhase phase = BlackjackPhase.BET;
+
+    public enum BlackjackPhase {
+        BET,
+        DEAL,
+        PLAYER_TURN,
+        DEALER_TURN,
+        SHOWDOWN
+    }
 
     public BlackjackPlayer getPlayer() {
         return player;

@@ -1,27 +1,27 @@
 package com.shr4pnel.casino.blackjack;
 
+import com.shr4pnel.casino.base.Card;
 import com.shr4pnel.casino.base.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlackjackPlayer extends Player {
-    private List<BlackjackCard> hand = new ArrayList<>();
-
     public BlackjackPlayer(boolean playerControlled) {
         super(playerControlled);
     }
 
     public boolean isBust() {
-        return false;
+        return getHandValue() > 21;
     }
 
     public int getHandValue() {
         int handValue = 0;
         List<BlackjackCard> aces = new ArrayList<>();
-        for (BlackjackCard c: hand) {
-            if (c.isAce()) {
-                aces.add(c);
+        for (Card c: hand) {
+            BlackjackCard card = (BlackjackCard) c;
+            if (card.isAce()) {
+                aces.add(card);
                 continue;
             }
             handValue += c.getCardValue();

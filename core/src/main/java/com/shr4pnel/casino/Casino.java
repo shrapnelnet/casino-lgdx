@@ -20,6 +20,7 @@ import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
+import com.shr4pnel.casino.scene.Blackjack;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.scene.Intro;
@@ -39,7 +40,7 @@ public class Casino extends ApplicationAdapter {
     private final AssetManager assetManager = new AssetManager();
     private boolean assetsLoaded = false;
     private StyleManager styleManager;
-    private Stage introStage, menuStage;
+    private Stage introStage, menuStage, blackjackStage;
     private Window introRoot;
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
@@ -47,7 +48,7 @@ public class Casino extends ApplicationAdapter {
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot;
+    private Table menuRoot, blackjackRoot;
 
     @Override
     public void create() {
@@ -57,6 +58,7 @@ public class Casino extends ApplicationAdapter {
 
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
+        blackjackStage = new Stage(viewport);
 
         // enqueue assets for loading
         queueAssets();
@@ -74,6 +76,10 @@ public class Casino extends ApplicationAdapter {
         // load menu scene2d markup
         menuRoot = Menu.get();
         menuStage.addActor(menuRoot);
+
+        // load blackjack scene2d markup
+        blackjackRoot = Blackjack.get();
+        blackjackStage.addActor(blackjackRoot);
     }
 
     private void queueAssets() {
@@ -165,13 +171,9 @@ public class Casino extends ApplicationAdapter {
     }
 
     private void renderBlackjack() {
-        batch.begin();
         ScreenUtils.clear(Color.BLACK);
-        float maxWidth = viewport.getWorldWidth();
-        float maxHeight = viewport.getWorldHeight();
-        batch.draw(background, 0, 0, maxWidth, maxHeight);
-        batch.draw(button, 50, 50, 25, 25);
-        batch.end();
+        blackjackStage.act(Gdx.graphics.getDeltaTime());
+        blackjackStage.draw();
     }
 
     private void renderMenu() {
