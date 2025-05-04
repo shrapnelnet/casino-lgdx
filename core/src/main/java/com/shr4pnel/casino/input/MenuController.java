@@ -3,7 +3,8 @@ package com.shr4pnel.casino.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.shr4pnel.casino.views.Menu;
+import com.shr4pnel.casino.scene.SceneManager;
+import com.shr4pnel.casino.scene.Menu;
 
 public class MenuState {
     private static ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();

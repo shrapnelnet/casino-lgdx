@@ -1,4 +1,4 @@
-package com.shr4pnel.casino.views;
+package com.shr4pnel.casino.scene;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.builders.LabelBuilder;
-import com.shr4pnel.casino.input.MenuState;
+import com.shr4pnel.casino.input.MenuController;
 import com.shr4pnel.casino.style.StyleManager;
 
 public class Menu {
@@ -37,7 +37,7 @@ public class Menu {
         textButtonGroup.add(play, settings, quit);
         textButtonGroup.setMaxCheckCount(1);
         textButtonGroup.setMinCheckCount(1);
-        MenuState.setMenuButtonGroup(textButtonGroup);
+        MenuController.setMenuButtonGroup(textButtonGroup);
 
         play.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -61,6 +61,6 @@ public class Menu {
 
     public static void updateActiveButton() {
         textButtonGroup.uncheckAll();
-        textButtonGroup.setChecked(MenuState.getActiveButton().getName());
+        textButtonGroup.setChecked(MenuController.getActiveButton().getName());
     }
 }

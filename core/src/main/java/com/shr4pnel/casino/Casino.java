@@ -22,8 +22,8 @@ import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.views.Intro;
-import com.shr4pnel.casino.views.Menu;
+import com.shr4pnel.casino.scene.Intro;
+import com.shr4pnel.casino.scene.Menu;
 
 // if you're lost, what you're looking for is probably in here ;)
 
