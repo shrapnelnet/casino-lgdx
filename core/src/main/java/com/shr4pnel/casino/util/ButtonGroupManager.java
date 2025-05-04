@@ -1,36 +1,40 @@
-package com.shr4pnel.casino.input;
+package com.shr4pnel.casino.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.scene.Menu;
+import com.shr4pnel.casino.scene.SceneManager;
 
-public class MenuState {
-    private static ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
-    private static TextButton activeButton;
+public class ButtonGroupManager {
+    private ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
+    private TextButton activeButton;
 
-    public static TextButton getActiveButton() {
+    public ButtonGroupManager(TextButton... t) {
+        menuButtonGroup.add(t);
+    }
+
+    public TextButton getActiveButton() {
         return activeButton;
     }
 
-    public static void setActiveButton(TextButton activeButton) {
-        MenuState.activeButton = activeButton;
+    public void setActiveButton(TextButton activeButton) {
+        this.activeButton = activeButton;
     }
 
-    public static void setMenuButtonGroup(ButtonGroup<TextButton> buttonGroup) {
+    public void setMenuButtonGroup(ButtonGroup<TextButton> buttonGroup) {
         if (menuButtonGroup != null) {
             menuButtonGroup.clear();
         }
 
-        for (TextButton b: buttonGroup.getButtons()) {
+        for (TextButton b : buttonGroup.getButtons()) {
             menuButtonGroup.add(b);
         }
 
         setActiveButton(menuButtonGroup.getChecked());
     }
 
-    private static TextButton getLeftToggledButton() {
+    private TextButton getLeftToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
 
@@ -44,7 +48,7 @@ public class MenuState {
         return menuButtonGroup.getButtons().get(nextIndex);
     }
 
-    private static TextButton getRightToggledButton() {
+    private TextButton getRightToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
 
@@ -58,28 +62,31 @@ public class MenuState {
         return menuButtonGroup.getButtons().get(nextIndex);
     }
 
-    private static int getToggledButtonIndex() {
+    private int getToggledButtonIndex() {
         return menuButtonGroup.getCheckedIndex();
     }
 
-    public static boolean left() {
-        TextButton nextButton = MenuState.getLeftToggledButton();
-        MenuState.setActiveButton(nextButton);
+    public boolean left() {
+        TextButton nextButton = getLeftToggledButton();
+        setActiveButton(nextButton);
         Menu.updateActiveButton();
         return true;
     }
 
-    public static boolean right() {
-        TextButton nextButton = MenuState.getRightToggledButton();
-        MenuState.setActiveButton(nextButton);
+    public boolean right() {
+        TextButton nextButton = getRightToggledButton();
+        setActiveButton(nextButton);
         Menu.updateActiveButton();
         return true;
     }
 
-    public static boolean enter() {
+    public boolean enter() {
         TextButton activeButton = getActiveButton();
         return switch (activeButton.getName()) {
-            case "Play" -> true;
+            case "Play" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.BLACKJACK);
+                yield true;
+            }
             case "Quit" -> {
                 Gdx.app.exit();
                 yield false;
@@ -88,4 +95,5 @@ public class MenuState {
             default -> false;
         };
     }
+
 }
