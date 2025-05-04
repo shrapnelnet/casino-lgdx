@@ -6,6 +6,7 @@ import java.util.List;
 public abstract class Player {
     protected List<Card> hand = new ArrayList<>();
     protected boolean playerControlled;
+    protected long chips = 100;
 
     public Player(boolean playerControlled) {
         this.playerControlled = playerControlled;
