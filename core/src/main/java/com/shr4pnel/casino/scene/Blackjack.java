@@ -8,13 +8,13 @@ import com.badlogic.gdx.utils.Align;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 
-public class Blackjack {
-    private static ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
-    private static ButtonGroupManager buttonGroupManager;
-    private static TextButton hit, stand, split, doubleDown;
+public class Blackjack extends ManagedButtonScene {
+    private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
+    private TextButton hit, stand, split, doubleDown;
+    private Table root;
 
-    public static Table get() {
-        Table root = new Table(StyleManager.getSkin());
+    public Table get() {
+        root = new Table(StyleManager.getSkin());
         root.setDebug(true);
         root.setSize(800, 450);
         root.background("window");
@@ -38,9 +38,5 @@ public class Blackjack {
         root.add(hit, stand, split, doubleDown).align(Align.bottom).row();
         root.add().height(20);
         return root;
-    }
-
-    public static ButtonGroupManager getButtonGroupManager() {
-        return buttonGroupManager;
     }
 }

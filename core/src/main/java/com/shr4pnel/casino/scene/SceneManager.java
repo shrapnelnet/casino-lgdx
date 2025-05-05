@@ -37,13 +37,23 @@ public class SceneManager {
         switch (activeScene) {
             case MENU -> {
                 SoundEffectHelper.stopAll();
+
+                ManagedButtonScene menuInstance = Casino
+                    .getInstance()
+                    .getSceneInstance(Scene.MENU);
+
                 // input processor changes prevent console from receiving input without reset
-                Gdx.input.setInputProcessor(new MenuInputProcessor());
+                Gdx.input.setInputProcessor(new MenuInputProcessor(menuInstance));
                 Casino.getActiveConsole().reset();
             }
             case BLACKJACK -> {
                 SoundEffectHelper.stopAll();
-                Gdx.input.setInputProcessor(new BlackjackInputProcessor());
+
+                ManagedButtonScene blackjackInstance = Casino
+                    .getInstance()
+                    .getSceneInstance(Scene.BLACKJACK);
+
+                Gdx.input.setInputProcessor(new BlackjackInputProcessor(blackjackInstance));
                 Casino.getActiveConsole().reset();
             }
         }

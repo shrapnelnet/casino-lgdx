@@ -1,25 +1,22 @@
 package com.shr4pnel.casino.scene;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 
-public class Menu {
-    private static final LabelBuilder labelBuilder = new LabelBuilder();
-    private static TextButton play, settings, quit;
-    private static TypingLabel label;
-    private static ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
-    private static ButtonGroupManager buttonGroupManager;
+public class Menu extends ManagedButtonScene {
+    private final LabelBuilder labelBuilder = new LabelBuilder();
+    private TextButton play, settings, quit;
+    private TypingLabel label;
+    private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
 
-
-    public static Table get() {
+    @Override
+    public Table get() {
         Table root = new Table(StyleManager.getSkin());
         Table labelRoot = new Table(StyleManager.getSkin());
 
@@ -52,11 +49,6 @@ public class Menu {
         root.add(settings).pad(10);
         root.add(quit).pad(10).row();
 
-
         return root;
-    }
-
-    public static ButtonGroupManager getButtonGroupManager() {
-        return buttonGroupManager;
     }
 }
