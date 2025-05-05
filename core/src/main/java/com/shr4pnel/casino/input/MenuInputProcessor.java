@@ -1,12 +1,16 @@
 package com.shr4pnel.casino.input;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.shr4pnel.casino.scene.Menu;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 
-public class MenuInputProcessor extends InputAdapter {
+public class MenuInputProcessor extends InputProcessor {
     private final ButtonGroupManager buttonGroupManager = Menu.getButtonGroupManager();
+
+    @Override
+    protected ButtonGroupManager getButtonGroupManager() {
+        return Menu.getButtonGroupManager();
+    }
 
     @Override
     public boolean keyDown(int keycode) {
