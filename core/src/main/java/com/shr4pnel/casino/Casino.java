@@ -20,11 +20,11 @@ import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
-import com.shr4pnel.casino.scene.Blackjack;
-import com.shr4pnel.casino.scene.SceneManager;
+import com.shr4pnel.casino.scene.*;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.scene.Intro;
-import com.shr4pnel.casino.scene.Menu;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // if you're lost, what you're looking for is probably in here ;)
 
@@ -49,6 +49,9 @@ public class Casino extends ApplicationAdapter {
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
     private Table menuRoot, blackjackRoot;
+    private Blackjack blackjack;
+    private Menu menu;
+    private Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
 
     @Override
     public void create() {
@@ -74,12 +77,18 @@ public class Casino extends ApplicationAdapter {
         introStage.addActor(introRoot);
 
         // load menu scene2d markup
-        menuRoot = Menu.get();
+        menu = new Menu();
+        menuRoot = menu.get();
         menuStage.addActor(menuRoot);
 
         // load blackjack scene2d markup
-        blackjackRoot = Blackjack.get();
+        blackjack = new Blackjack();
+        blackjackRoot = blackjack.get();
         blackjackStage.addActor(blackjackRoot);
+
+        // store scene instances in map for scenemanager accesses and implicit ownership within Casino
+        sceneInstanceMap.put(SceneManager.Scene.MENU, menu);
+        sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
     }
 
     private void queueAssets() {
@@ -184,5 +193,13 @@ public class Casino extends ApplicationAdapter {
 
     public static ConsoleManager getActiveConsole() {
         return console;
+    }
+
+    public static Casino getInstance() {
+        return (Casino) Gdx.app.getApplicationListener();
+    }
+
+    public ManagedButtonScene getSceneInstance(SceneManager.Scene s) {
+        return sceneInstanceMap.get(s);
     }
 }
