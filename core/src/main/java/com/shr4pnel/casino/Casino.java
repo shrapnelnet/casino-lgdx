@@ -22,6 +22,7 @@ import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.*;
 import com.shr4pnel.casino.style.StyleManager;
+import com.shr4pnel.casino.util.TextureManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,6 @@ import java.util.Map;
  */
 public class Casino extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Texture background, button;
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
@@ -51,7 +51,8 @@ public class Casino extends ApplicationAdapter {
     private Table menuRoot, blackjackRoot;
     private Blackjack blackjack;
     private Menu menu;
-    private Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
+    private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
+    private TextureManager textureManager;
 
     @Override
     public void create() {
@@ -63,8 +64,9 @@ public class Casino extends ApplicationAdapter {
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
 
-        // enqueue assets for loading
-        queueAssets();
+        // preload textures
+        textureManager = new TextureManager();
+        textureManager.preload();
 
         // post processing
         initialPostProcess();
@@ -91,11 +93,6 @@ public class Casino extends ApplicationAdapter {
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
     }
 
-    private void queueAssets() {
-        assetManager.load("bg/backdrop.png", Texture.class);
-        assetManager.load("buttons/blackjack.jpg", Texture.class);
-    }
-
     private void initialPostProcess() {
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         crtEffect = new CrtEffect();
@@ -118,10 +115,8 @@ public class Casino extends ApplicationAdapter {
     }
 
     private void initialRenderAssets() {
-        background = assetManager.get("bg/backdrop.png", Texture.class);
-        button = assetManager.get("buttons/blackjack.jpg", Texture.class);
+        assetManager.load("card/card.jpg", Texture.class);
         assetsLoaded = true;
-        console.getConsole().log("Asset loading complete");
     }
 
     @Override
@@ -142,6 +137,9 @@ public class Casino extends ApplicationAdapter {
         console = new ConsoleManager();
     }
 
+    /**
+     * Get active scene every frame, render correct scene and pass work to individual rendering method
+     */
     private void draw() {
         if (assetManager.update()) {
             batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -158,7 +156,6 @@ public class Casino extends ApplicationAdapter {
     private void startPostProcessing() {
         if (StyleManager.getPostProcessingDisabled())
             return;
-        vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
     }
 
@@ -168,6 +165,7 @@ public class Casino extends ApplicationAdapter {
         vfxManager.endInputCapture();
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
+        vfxManager.cleanUpBuffers();
     }
 
     private void renderIntro() {
@@ -199,7 +197,15 @@ public class Casino extends ApplicationAdapter {
         return (Casino) Gdx.app.getApplicationListener();
     }
 
+    public ManagedButtonGame getGameInstance(SceneManager.Scene s) {
+        return (ManagedButtonGame) sceneInstanceMap.get(s);
+    }
+
     public ManagedButtonScene getSceneInstance(SceneManager.Scene s) {
-        return sceneInstanceMap.get(s);
+        return (ManagedButtonScene) sceneInstanceMap.get(s);
+    }
+
+    public TextureManager getTextureManagerInstance() {
+        return textureManager;
     }
 }
