@@ -26,7 +26,7 @@ public class SceneManager {
         prettyNameToScene.put("blackjack", Scene.BLACKJACK);
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
-        setActiveScene(Scene.BLACKJACK);
+        setActiveScene(Scene.MENU);
     }
 
     public static Scene getActiveScene() {
@@ -51,7 +51,7 @@ public class SceneManager {
 
                 ManagedButtonScene blackjackInstance = Casino
                     .getInstance()
-                    .getSceneInstance(Scene.BLACKJACK);
+                    .getGameInstance(Scene.BLACKJACK);
 
                 Gdx.input.setInputProcessor(new BlackjackInputProcessor(blackjackInstance));
                 Casino.getActiveConsole().reset();
