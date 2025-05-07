@@ -1,11 +1,11 @@
 package com.shr4pnel.casino.blackjack;
 
 import com.shr4pnel.casino.base.Deck;
-import com.shr4pnel.casino.base.Player;
+import com.shr4pnel.casino.base.Game;
 
-public class BlackjackGame {
-    private BlackjackPlayer player = new BlackjackPlayer(true);
-    private BlackjackPlayer ai = new BlackjackPlayer(false);
+public class BlackjackGame extends Game {
+    protected BlackjackPlayer player = new BlackjackPlayer(true);
+    protected BlackjackPlayer ai = new BlackjackPlayer(false);
     private Deck deck = new BlackjackDeck();
     private BlackjackPhase phase = BlackjackPhase.BET;
 
@@ -17,15 +17,17 @@ public class BlackjackGame {
         SHOWDOWN
     }
 
+    @Override
     public BlackjackPlayer getPlayer() {
         return player;
     }
 
-    public Player getAi() {
+    @Override
+    public BlackjackPlayer getAi() {
         return ai;
     }
 
-    private void hit(Player p) {
+    private void hit(BlackjackPlayer p) {
         p.add(deck.drawCard());
     }
 
@@ -34,5 +36,9 @@ public class BlackjackGame {
      */
     public void hit() {
         player.add(deck.drawCard());
+    }
+
+    public BlackjackPhase getPhase() {
+        return phase;
     }
 }
