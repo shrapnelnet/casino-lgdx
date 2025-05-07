@@ -1,5 +1,9 @@
 # casino-gdx
 
+## Docs
+
+Accessible and auto-updating [here](https://casino-doc.shrapnelnet.co.uk)
+
 ## Structure
 
 `assets/`
