@@ -10,12 +10,20 @@ import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.style.StyleManager;
 
+/**
+ * Handles the UI for the Intro
+ * @author shrapnelnet
+ * @since 0.1.0
+ */
 public class Intro {
     private static TypingLabel topLabel, readyLabel, middleLabel, ellipsisLabel;
     private static Window root;
     private static LabelBuilder labelBuilder = new LabelBuilder();
     private static TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
 
+    /**
+     * @return The UI for the intro
+     */
     public static Window get() {
         Skin skin = StyleManager.getSkin();
         root = new Window("", skin);
@@ -42,7 +50,7 @@ public class Intro {
 
         TypingAdapter ellipsisLabelTypingAdapter = typingAdapterBuilder
             .addEvent("start_art")
-            .delay(125)
+            .delay(200)
             .build();
 
         ellipsisLabel.addTypingListener(ellipsisLabelTypingAdapter);

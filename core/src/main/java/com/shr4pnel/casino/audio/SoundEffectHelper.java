@@ -7,6 +7,12 @@ import com.badlogic.gdx.files.FileHandle;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Primarily a builder that makes it easy to create and manipulate SoundEffect instances
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see SoundEffect
+ */
 public class SoundEffectHelper {
     private static final Map<String, Sound> loadedSounds = new HashMap<>();
     /**
@@ -93,12 +99,18 @@ public class SoundEffectHelper {
         return new SoundEffect(path, vol);
     }
 
+    /**
+     * Dispose of all loaded sounds
+     */
     public static void dispose() {
         for (Sound s: loadedSounds.values()) {
             s.dispose();
         }
     }
 
+    /**
+     * Preload all files in assets/sound
+     */
     public static void preload() {
         FileHandle fh = Gdx.files.internal("sound");
         for (FileHandle file: fh.list()) {
@@ -109,6 +121,9 @@ public class SoundEffectHelper {
         }
     }
 
+    /**
+     * Stop all actively playing sounds
+     */
     public static void stopAll() {
         for (Sound s: loadedSounds.values()) {
             s.stop();

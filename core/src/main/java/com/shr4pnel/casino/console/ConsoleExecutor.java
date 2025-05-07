@@ -9,6 +9,12 @@ import com.strongjoshua.console.annotation.ConsoleDoc;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages commands available in the console
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see ConsoleManager
+ */
 public class ConsoleExecutor extends CommandExecutor {
     private Map<String, Boolean> stateStringToBool = new HashMap<>(2);
 

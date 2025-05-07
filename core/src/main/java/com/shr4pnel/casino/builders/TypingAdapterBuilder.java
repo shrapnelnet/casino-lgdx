@@ -10,6 +10,9 @@ import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.util.AsciiArt;
 
+/**
+ * Build TypingAdapters on the fly, which can play sounds when text has finished typing, or fire other events relating to a TypingLabel that has finished typing
+ */
 public class TypingAdapterBuilder {
     private String path;
     private float vol = 1;
@@ -20,43 +23,73 @@ public class TypingAdapterBuilder {
     private int height = 0;
     private String eventName;
 
+    /**
+     * Set a sound to play at the end of the TypingLabel
+     * @param path Path to the audio file relative to assets/
+     * @return The current instance
+     */
     public TypingAdapterBuilder setSound(String path) {
         this.path = path;
         return this;
     }
 
+    /**
+     * Set a sound to play at the end of the TypingLabel
+     * @param path Path to the audio file relative to assets/
+     * @param vol The volume of the sound effect from 0-1
+     * @return The current instance
+     */
     public TypingAdapterBuilder setSound(String path, float vol) {
         this.path = path;
         this.vol = vol;
         return this;
     }
 
+    /**
+     * Do not interrupt other sound effects when the typing label has finished
+     * @return The current instance
+     */
     public TypingAdapterBuilder dontStopSound() {
         stopSound = false;
         return this;
     }
 
+    /**
+     * Chain a typing label, start a typing label when another has finished
+     * @param tl The new typing label
+     * @param w The window to render the typing label inside
+     * @return The current instance
+     */
     public TypingAdapterBuilder chainTypingLabel(TypingLabel tl, Window w) {
         root = w;
         labelToAdd = tl;
         return this;
     }
 
+    /**
+     * Set a delay, before performing any set actions at the end of a typinglabel
+     * @param delayMillis How long to wait in ms
+     * @return The current instance
+     */
     public TypingAdapterBuilder delay(int delayMillis) {
         this.delayMillis = delayMillis;
         return this;
     }
 
+    /**
+     * Add a TypingLabel event to fire
+     * @param s The name of the event
+     * @return The current instance
+     */
     public TypingAdapterBuilder addEvent(String s) {
         eventName = s;
         return this;
     }
 
-    public TypingAdapterBuilder height(int height) {
-        this.height = height;
-        return this;
-    }
-
+    /**
+     * Build the typing adapter, with previously set parameters
+     * @return A TypingAdapter
+     */
     public TypingAdapter build() {
         final String localPath = path;
         final float localVol = vol;

@@ -1,5 +1,11 @@
 package com.shr4pnel.casino.base;
 
+/**
+ * Base class for all cards
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see com.shr4pnel.casino.blackjack.BlackjackCard
+ */
 public abstract class Card {
     protected String suit;
     protected int cardValue;
