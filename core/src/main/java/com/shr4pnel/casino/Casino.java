@@ -231,7 +231,7 @@ public class Casino extends ApplicationAdapter {
     }
 
     /**
-     * @return The active texture manager
+     * @return The active  texture manager
      */
     public TextureManager getTextureManagerInstance() {
         return textureManager;
