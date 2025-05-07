@@ -3,10 +3,8 @@ package com.shr4pnel.casino.builders;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-
 import com.shr4pnel.casino.audio.SoundEffect;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.scene.SceneManager;
