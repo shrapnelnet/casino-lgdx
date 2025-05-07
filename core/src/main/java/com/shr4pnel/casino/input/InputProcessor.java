@@ -18,8 +18,8 @@ public abstract class InputProcessor extends InputAdapter {
             return false;
 
         return switch (keycode) {
-            case Keys.LEFT -> manager.left();
-            case Keys.RIGHT -> manager.right();
+            case Keys.LEFT, Keys.A -> manager.left();
+            case Keys.RIGHT, Keys.D -> manager.right();
             case Keys.Z, Keys.ENTER, Keys.NUMPAD_ENTER -> manager.enter();
             default -> false;
         };
