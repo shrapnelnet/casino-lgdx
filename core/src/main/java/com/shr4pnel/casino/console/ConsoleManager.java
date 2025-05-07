@@ -6,6 +6,9 @@ import com.strongjoshua.console.Console;
 import com.strongjoshua.console.GUIConsole;
 import com.strongjoshua.console.LogLevel;
 
+/**
+ * Manages the lifecycle of the console
+ */
 public class ConsoleManager {
     private final Console console = new GUIConsole();
     private final ConsoleExecutor executor = new ConsoleExecutor();
@@ -21,18 +24,16 @@ public class ConsoleManager {
         console.setCommandExecutor(executor);
     }
 
+    /**
+     * Disposes of the console instance
+     */
     public void destroy() {
         console.dispose();
     }
 
-    public Console getConsole() {
-        return console;
-    }
-
-    public CommandExecutor getExecutor() {
-        return executor;
-    }
-
+    /**
+     * Draw the console on the screen
+     */
     public void draw() {
         console.draw();
     }
@@ -53,6 +54,9 @@ public class ConsoleManager {
         console.log(err, lvl);
     }
 
+    /**
+     * Reset console input processing, necessary when changing the active input processor
+     */
     public void reset() {
         console.resetInputProcessing();
     }

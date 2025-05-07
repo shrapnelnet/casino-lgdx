@@ -32,6 +32,8 @@ import java.util.Map;
 /**
  * Application entry point
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
+ * @author shrapnelnet
+ * @since 0.1.0
  */
 public class Casino extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -93,6 +95,9 @@ public class Casino extends ApplicationAdapter {
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
     }
 
+    /**
+     * Set important post-processing variables before rendering
+     */
     private void initialPostProcess() {
         vfxManager = new VfxManager(Pixmap.Format.RGBA8888);
         crtEffect = new CrtEffect();
@@ -104,8 +109,8 @@ public class Casino extends ApplicationAdapter {
 
     @Override
     public void render() {
-        if (!assetsLoaded && assetManager.update())
-            initialRenderAssets();
+//        if (!assetsLoaded && assetManager.update())
+//            initialRenderAssets();
 
         startPostProcessing();
         draw();
@@ -114,10 +119,10 @@ public class Casino extends ApplicationAdapter {
         console.draw();
     }
 
-    private void initialRenderAssets() {
-        assetManager.load("card/card.jpg", Texture.class);
-        assetsLoaded = true;
-    }
+//    private void initialRenderAssets() {
+//        assetManager.load("card/card.jpg", Texture.class);
+//        assetsLoaded = true;
+//    }
 
     @Override
     public void dispose() {
@@ -153,19 +158,25 @@ public class Casino extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Perform post-processing tasks that need to be done before anything can be drawn
+     */
     private void startPostProcessing() {
         if (StyleManager.getPostProcessingDisabled())
             return;
+        vfxManager.cleanUpBuffers();
         vfxManager.beginInputCapture();
     }
 
+    /**
+     * Apply post-processing effects
+     */
     private void renderPostProcessing() {
         if (StyleManager.getPostProcessingDisabled())
             return;
         vfxManager.endInputCapture();
         vfxManager.applyEffects();
         vfxManager.renderToScreen();
-        vfxManager.cleanUpBuffers();
     }
 
     private void renderIntro() {
@@ -193,18 +204,35 @@ public class Casino extends ApplicationAdapter {
         return console;
     }
 
+    /**
+     * Get the casino as an object, useful for getting important info about active states
+     * @return The running instance of casino
+     */
     public static Casino getInstance() {
         return (Casino) Gdx.app.getApplicationListener();
     }
 
+    /**
+     * Get the instance of a game (stored in sceneInstanceMap)
+     * @param s The scene to get
+     * @return The scene, as a ManagedButtonGame
+     */
     public ManagedButtonGame getGameInstance(SceneManager.Scene s) {
-        return (ManagedButtonGame) sceneInstanceMap.get(s);
+        return (ManagedButtonGame) getSceneInstance(s);
     }
 
+    /**
+     * Get the instance of a scene (stored in sceneInstanceMap)
+     * @param s The scene to get
+     * @return The scene, as a ManagedButtonScene
+     */
     public ManagedButtonScene getSceneInstance(SceneManager.Scene s) {
-        return (ManagedButtonScene) sceneInstanceMap.get(s);
+        return sceneInstanceMap.get(s);
     }
 
+    /**
+     * @return The active texture manager
+     */
     public TextureManager getTextureManagerInstance() {
         return textureManager;
     }

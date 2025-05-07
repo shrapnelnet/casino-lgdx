@@ -9,12 +9,21 @@ import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 
+/**
+ * Handles the UI for the intro.
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see ManagedButtonScene
+ */
 public class Menu extends ManagedButtonScene {
     private final LabelBuilder labelBuilder = new LabelBuilder();
     private TextButton play, settings, quit;
     private TypingLabel label;
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
 
+    /**
+     * @return The Intro Scene2D ui, as a table
+     */
     @Override
     public Table get() {
         Table root = new Table(StyleManager.getSkin());

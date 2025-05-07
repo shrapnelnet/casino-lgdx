@@ -9,6 +9,12 @@ import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 import com.shr4pnel.casino.util.TextureManager;
 
+/**
+ * Handles the UI for blackjack. logic should be kept to a minimum in here!
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see ManagedButtonGame
+ */
 public class Blackjack extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
     private TextButton hit, stand, split, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet;
@@ -19,6 +25,10 @@ public class Blackjack extends ManagedButtonGame {
     private BlackjackGame game;
     private LabelBuilder labelBuilder;
 
+    /**
+     * Get the blackjack scene
+     * @return A table, containing the scene
+     */
     public Table get() {
         root = new Table(StyleManager.getSkin());
         userHandRoot = new Table(StyleManager.getSkin());
@@ -55,6 +65,10 @@ public class Blackjack extends ManagedButtonGame {
         return root;
     }
 
+    /**
+     * Set all relevant button fields to the correct values
+     * @param t A variable amount of textbuttons
+     */
     private void setAllButtons(TextButton... t) {
         playerButtonRoot.clear();
         playerButtonRoot.add().expandX();
@@ -75,26 +89,46 @@ public class Blackjack extends ManagedButtonGame {
         return textureManager.getImage("card/card.jpg");
     }
 
+    /**
+     * Create a new text button
+     * @param content The content of the button
+     * @return A correctly built text button
+     */
     private TextButton newTextButton(String content) {
         TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
         t.setName(content);
         return t;
     }
 
+    /**
+     * Get the game instance for accessing the state and logic of the game from outside of the stage
+     * @return The current game instance
+     */
     public BlackjackGame getGameInstance() {
         return game;
     }
 
+    /**
+     * Update the chip counter shown during the BET phase
+     */
     public void updateChipDisplay() {
         chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
     }
 
+    /**
+     * Set the correct button pane for the user, based on the phase of the game
+     * @see BlackjackGame
+     */
     public void setPlayerButtonPaneByPhase() {
         switch (game.getPhase()) {
             case BET -> setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
         }
     }
 
+    /**
+     * Stub
+     * @param msg Stub
+     */
     public void alert(String msg) {
 
     }

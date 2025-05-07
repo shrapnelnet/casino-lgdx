@@ -5,6 +5,13 @@ import com.badlogic.gdx.InputAdapter;
 import com.shr4pnel.casino.scene.ManagedButtonScene;
 import com.shr4pnel.casino.util.ButtonGroupManager;
 
+/**
+ * Base class for custom input processors for scenes that use buttons
+ * @author shrapnelnet
+ * @since 0.1.0
+ * @see ManagedButtonScene
+ * @see com.shr4pnel.casino.scene.ManagedButtonGame
+ */
 public abstract class InputProcessor extends InputAdapter {
     protected ButtonGroupManager manager;
 
