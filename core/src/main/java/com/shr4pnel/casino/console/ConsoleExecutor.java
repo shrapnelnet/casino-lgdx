@@ -1,5 +1,6 @@
 package com.shr4pnel.casino.console;
 
+import com.badlogic.gdx.Gdx;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.strongjoshua.console.CommandExecutor;
@@ -43,5 +44,10 @@ public class ConsoleExecutor extends CommandExecutor {
     @ConsoleDoc(description = "Reinitialize starting state, replay intro")
     public void restart() {
         SceneManager.setActiveScene(SceneManager.Scene.INTRO);
+    }
+
+    @ConsoleDoc(description = "Exit the game")
+    public void exit() {
+        Gdx.app.exit();
     }
 }
