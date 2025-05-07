@@ -1,5 +1,6 @@
 package com.shr4pnel.casino.lwjgl3;
 
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.shr4pnel.casino.Casino;
@@ -19,9 +20,8 @@ public class Lwjgl3Launcher {
         configuration.setTitle("casino-gdx");
         configuration.useVsync(true);
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
-//        configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
-        configuration.setWindowedMode(1920, 1080);
+        configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
         return configuration;
     }
 }
