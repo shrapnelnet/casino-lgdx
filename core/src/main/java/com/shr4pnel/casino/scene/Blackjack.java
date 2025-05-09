@@ -6,7 +6,7 @@ import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.util.ButtonGroupManager;
+import com.shr4pnel.casino.input.ButtonGroupManager;
 import com.shr4pnel.casino.util.TextureManager;
 
 /**

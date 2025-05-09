@@ -1,4 +1,4 @@
-package com.shr4pnel.casino.util;
+package com.shr4pnel.casino.input;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 

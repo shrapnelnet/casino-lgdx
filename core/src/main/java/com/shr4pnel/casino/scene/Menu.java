@@ -7,7 +7,7 @@ import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.util.ButtonGroupManager;
+import com.shr4pnel.casino.input.ButtonGroupManager;
 
 /**
  * Handles the UI for the intro.

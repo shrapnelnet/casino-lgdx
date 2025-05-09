@@ -1,6 +1,6 @@
 package com.shr4pnel.casino.scene;
 
-import com.shr4pnel.casino.util.ButtonGroupManager;
+import com.shr4pnel.casino.input.ButtonGroupManager;
 
 /**
  * Used to force all scenes with buttons to have an accessible buttongroupmanager
