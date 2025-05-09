@@ -50,8 +50,15 @@ public abstract class Player {
      * @param l
      */
     public void incrementBet(Long l) {
-        if ((bet + l) > chips || (bet + l) < 0)
+        if ((bet + l) < 0) {
+            bet = 0L;
             return;
+        }
+
+        if ((bet + l) > chips) {
+            bet = chips;
+            return;
+        }
 
         bet += l;
     }

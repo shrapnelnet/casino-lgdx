@@ -36,9 +36,7 @@ public class BlackjackButtonManager extends ButtonGroupManager {
         Game g = scene.getGameInstance();
         Player p = g.getPlayer();
         p.incrementBet(incrementStringToLong.get(name));
-
-        if (scene instanceof Blackjack)
-            ((Blackjack) scene).updateChipDisplay();
+        ((Blackjack) scene).updateChipDisplay();
         return true;
     }
 
