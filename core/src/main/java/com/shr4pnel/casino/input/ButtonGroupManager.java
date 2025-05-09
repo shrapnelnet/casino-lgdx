@@ -23,16 +23,9 @@ public class ButtonGroupManager {
     private final ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
     private TextButton activeButton;
     private ButtonGroupListener listener;
-    private final Map<String, Long> incrementStringToLong = new HashMap<>();
 
     public ButtonGroupManager(TextButton... t) {
         setMenuButtonGroup(t);
-        incrementStringToLong.put("---", -100L);
-        incrementStringToLong.put("--", -10L);
-        incrementStringToLong.put("-", -1L);
-        incrementStringToLong.put("+", 1L);
-        incrementStringToLong.put("++", 10L);
-        incrementStringToLong.put("+++", 100L);
     }
 
     /**
@@ -148,31 +141,10 @@ public class ButtonGroupManager {
             }
 
             case "Settings" -> true;
-
-            case "---", "--", "-", "+", "++", "+++" -> incrementBet(activeButton.getName());
-
             default -> false;
         };
     }
 
-    /**
-     * Increment the displayed bet
-     * todo MOVE THIS TO SPECIFIC IMPLEMENTATION SO WE DO NOT HAVE TO CAST... MAYBE?
-     * @param name The name of the button, assigned when they are created
-     * @return True, when incrementing is complete
-     * @see Blackjack
-     */
-    private boolean incrementBet(String name) {
-        Casino c = Casino.getInstance();
-        ManagedButtonGame scene = c.getGameInstance(SceneManager.getActiveScene());
-        Game g = scene.getGameInstance();
-        Player p = g.getPlayer();
-        p.incrementBet(incrementStringToLong.get(name));
-
-        if (scene instanceof Blackjack)
-            ((Blackjack) scene).updateChipDisplay();
-        return true;
-    }
 
     /**
      * Assign a listener to the buttongroupmanager

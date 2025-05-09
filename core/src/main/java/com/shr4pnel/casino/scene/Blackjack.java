@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
 import com.shr4pnel.casino.builders.LabelBuilder;
+import com.shr4pnel.casino.input.BlackjackButtonManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.input.ButtonGroupManager;
 import com.shr4pnel.casino.util.TextureManager;
@@ -78,7 +79,7 @@ public class Blackjack extends ManagedButtonGame {
         textButtonGroup.add(t);
 
         if (buttonGroupManager == null) {
-            buttonGroupManager = new ButtonGroupManager(t);
+            buttonGroupManager = new BlackjackButtonManager(t);
             buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
         } else {
             buttonGroupManager.setMenuButtonGroup(t);
