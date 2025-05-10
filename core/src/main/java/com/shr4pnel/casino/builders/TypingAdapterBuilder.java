@@ -10,7 +10,6 @@ import com.shr4pnel.casino.audio.SoundEffect;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
 import com.shr4pnel.casino.scene.Blackjack;
-import com.shr4pnel.casino.scene.ManagedButtonGame;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.util.AsciiArt;
 
@@ -31,6 +30,7 @@ public class TypingAdapterBuilder {
 
     /**
      * Set a sound to play at the end of the TypingLabel
+     *
      * @param path Path to the audio file relative to assets/
      * @return The current instance
      */
@@ -41,8 +41,9 @@ public class TypingAdapterBuilder {
 
     /**
      * Set a sound to play at the end of the TypingLabel
+     *
      * @param path Path to the audio file relative to assets/
-     * @param vol The volume of the sound effect from 0-1
+     * @param vol  The volume of the sound effect from 0-1
      * @return The current instance
      */
     public TypingAdapterBuilder setSound(String path, float vol) {
@@ -53,6 +54,7 @@ public class TypingAdapterBuilder {
 
     /**
      * Do not interrupt other sound effects when the typing label has finished
+     *
      * @return The current instance
      */
     public TypingAdapterBuilder dontStopSound() {
@@ -62,8 +64,9 @@ public class TypingAdapterBuilder {
 
     /**
      * Chain a typing label, start a typing label when another has finished
+     *
      * @param tl The new typing label
-     * @param w The window to render the typing label inside
+     * @param w  The window to render the typing label inside
      * @return The current instance
      */
     public TypingAdapterBuilder chainTypingLabel(TypingLabel tl, Window w) {
@@ -74,6 +77,7 @@ public class TypingAdapterBuilder {
 
     /**
      * Set a delay, before performing any set actions at the end of a typinglabel
+     *
      * @param delayMillis How long to wait in ms
      * @return The current instance
      */
@@ -84,6 +88,7 @@ public class TypingAdapterBuilder {
 
     /**
      * Add a TypingLabel event to fire
+     *
      * @param s The name of the event
      * @return The current instance
      */
@@ -99,6 +104,7 @@ public class TypingAdapterBuilder {
 
     /**
      * Build the typing adapter, with previously set parameters
+     *
      * @return A TypingAdapter
      */
     public TypingAdapter build() {
