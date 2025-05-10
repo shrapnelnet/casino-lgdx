@@ -51,6 +51,8 @@ public class ButtonGroupManager {
      * @param activeButton The button to be hovered over
      */
     public void setActiveButton(TextButton activeButton) {
+        if (activeButton == null)
+            return;
         this.activeButton = activeButton;
         menuButtonGroup.setChecked(activeButton.getName());
         if (listener != null)
@@ -64,6 +66,9 @@ public class ButtonGroupManager {
     private TextButton getLeftToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0)
+            return null;
 
         int index = getToggledButtonIndex();
 
@@ -82,6 +87,10 @@ public class ButtonGroupManager {
     private TextButton getRightToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0) {
+            return null;
+        }
 
         int index = getToggledButtonIndex();
 
@@ -107,6 +116,8 @@ public class ButtonGroupManager {
      */
     public boolean left() {
         TextButton nextButton = getLeftToggledButton();
+        if (nextButton == null)
+            return false;
         setActiveButton(nextButton);
         return true;
     }
@@ -118,6 +129,8 @@ public class ButtonGroupManager {
      */
     public boolean right() {
         TextButton nextButton = getRightToggledButton();
+        if (nextButton == null)
+            return false;
         setActiveButton(nextButton);
         return true;
     }
