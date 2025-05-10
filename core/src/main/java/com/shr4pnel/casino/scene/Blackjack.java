@@ -2,13 +2,20 @@ package com.shr4pnel.casino.scene;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
+import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
+import com.shr4pnel.casino.blackjack.BlackjackPlayer;
 import com.shr4pnel.casino.builders.LabelBuilder;
+import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.input.BlackjackButtonManager;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.input.ButtonGroupManager;
+import com.shr4pnel.casino.util.AsciiArt;
 import com.shr4pnel.casino.util.TextureManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Handles the UI for blackjack. logic should be kept to a minimum in here!
@@ -19,12 +26,14 @@ import com.shr4pnel.casino.util.TextureManager;
 public class Blackjack extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
     private TextButton hit, stand, split, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet;
-    private Label chipCount, phase;
+    private Label chipCount;
+    private TypingLabel phase;
     private Image cardPlain;
-    private Table root, userHandRoot, aiHandRoot, playerButtonRoot, chipTable;
+    private Table root, playerHandRoot, aiHandRoot, playerButtonRoot, chipTable, status;
     private TextureManager textureManager;
     private BlackjackGame game;
-    private LabelBuilder labelBuilder;
+    private LabelBuilder labelBuilder = new LabelBuilder();
+    private AsciiArt asciiArt = new AsciiArt();
 
     /**
      * Get the blackjack scene
@@ -32,15 +41,21 @@ public class Blackjack extends ManagedButtonGame {
      */
     public Table get() {
         root = new Table(StyleManager.getSkin());
-        userHandRoot = new Table(StyleManager.getSkin());
+        playerHandRoot = new Table(StyleManager.getSkin());
         aiHandRoot = new Table(StyleManager.getSkin());
         playerButtonRoot = new Table(StyleManager.getSkin());
         chipTable = new Table(StyleManager.getSkin());
+        status = new Table(StyleManager.getSkin());
 
         game = new BlackjackGame();
         chipCount = new Label("Bet: 0/" + game.getPlayer().getChips(), StyleManager.getSkin());
+        phase = labelBuilder
+            .start("Phase: {SLIDE}" + game.getPhaseAsString() + "{ENDSLIDE}")
+            .build();
 
-        root.setDebug(false, true);
+        status.add(phase).row();
+
+        root.setDebug(true, true);
         root.setSize(800, 450);
         root.background("window");
 
@@ -62,6 +77,9 @@ public class Blackjack extends ManagedButtonGame {
         setPlayerButtonPaneByPhase();
         chipTable.add(chipCount).width(190);
         playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
+        root.add(status).expand().top().left().row();
+        root.add(aiHandRoot).top().row();
+        root.add(playerHandRoot).bottom().row();
         root.add(playerButtonRoot).expand().bottom();
         return root;
     }
@@ -72,6 +90,10 @@ public class Blackjack extends ManagedButtonGame {
      */
     private void setAllButtons(TextButton... t) {
         playerButtonRoot.clear();
+
+        if (t == null)
+            return;
+
         playerButtonRoot.add().expandX();
         playerButtonRoot.add(t).right();
 
@@ -120,17 +142,88 @@ public class Blackjack extends ManagedButtonGame {
      * Set the correct button pane for the user, based on the phase of the game
      * @see BlackjackGame
      */
-    public void setPlayerButtonPaneByPhase() {
+    private void setPlayerButtonPaneByPhase() {
         switch (game.getPhase()) {
-            case BET -> setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
+            case BET -> bet();
+            case DEAL -> deal();
+            case PLAYER_TURN -> setAllButtons(hit, stand, doubleDown);
         }
     }
 
-    /**
-     * Stub
-     * @param msg Stub
-     */
-    public void alert(String msg) {
+    private void bet() {
+        setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
+    }
 
+    private void deal() {
+        // blank all buttons in ui
+        setAllButtons();
+
+        // fetch user and ai hands as arrays (this is why logic needs to fire before UI code)
+        String[] playerCards = asciiArt.getCards(game.getPlayer().getPlayerHand());
+        String[] aiCards = asciiArt.getCards(game.getAi().getPlayerHand());
+
+        // containers for player and AI hands
+        Table playerContainer = new Table(StyleManager.getSkin());
+        Table aiContainer = new Table(StyleManager.getSkin());
+
+        TypingLabel l;
+        Table t;
+        for (String card: playerCards) {
+            l = labelBuilder
+                .start(card)
+                .build();
+            t = new Table(StyleManager.getSkin());
+            l.setFontScale(0.5f);
+            t.add(l);
+            playerContainer.add(t);
+            playerContainer.add().width(15);
+        }
+
+        TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
+        boolean firstIter = true;
+        for (String card: aiCards) {
+            t = new Table(StyleManager.getSkin());
+
+            // hide first drawn card from user
+            if (firstIter) {
+                TypingAdapter adapter = typingAdapterBuilder
+                    .addEvent("bjdeal_complete")
+                    .dontStopSound()
+                    .build();
+
+                l = labelBuilder
+                    .start(asciiArt.getCardBack())
+                    .build();
+
+                l.addTypingListener(adapter);
+
+                l.setFontScale(0.5f);
+                t.add(l);
+                aiContainer.add(t);
+                aiContainer.add().width(15);
+                firstIter = false;
+                continue;
+            }
+
+            l = labelBuilder
+                .start(card)
+                .build();
+
+            l.setFontScale(0.5f);
+
+            t.add(l);
+            aiContainer.add(t);
+            aiContainer.add().width(15);
+        }
+
+        playerHandRoot.add(playerContainer);
+        aiHandRoot.add(aiContainer).padBottom(50);
+    }
+
+    public void updatePhase() {
+        final String prettyPhase = game.getPhaseAsString();
+        final BlackjackGame.BlackjackPhase currentPhase = game.getPhase();
+        phase.setText("Phase: {SLIDE}" + prettyPhase + "{ENDSLIDE}");
+        setPlayerButtonPaneByPhase();
     }
 }
