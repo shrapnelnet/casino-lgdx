@@ -10,7 +10,7 @@ import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.input.ButtonGroupManager;
 
 /**
- * Handles the UI for the intro.
+ * Handles the UI for the menu.
  * @author shrapnelnet
  * @since 0.1.0
  * @see ManagedButtonScene
