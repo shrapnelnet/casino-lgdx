@@ -78,4 +78,8 @@ public abstract class Player {
     public void add(List<Card> cards) {
         hand.addAll(cards);
     }
+
+    public List<Card> getPlayerHand() {
+        return hand;
+    }
 }
