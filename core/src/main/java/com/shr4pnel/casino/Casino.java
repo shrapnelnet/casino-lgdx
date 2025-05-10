@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -18,7 +17,6 @@ import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
 
 import com.shr4pnel.casino.audio.SoundEffectHelper;
-import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.*;
 import com.shr4pnel.casino.style.StyleManager;
@@ -40,11 +38,8 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private boolean assetsLoaded = false;
-    private StyleManager styleManager;
     private Stage introStage, menuStage, blackjackStage;
     private Window introRoot;
-    private final LabelBuilder labelBuilder = new LabelBuilder();
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
@@ -231,7 +226,7 @@ public class Casino extends ApplicationAdapter {
     }
 
     /**
-     * @return The active  texture manager
+     * @return The active texture manager
      */
     public TextureManager getTextureManagerInstance() {
         return textureManager;
