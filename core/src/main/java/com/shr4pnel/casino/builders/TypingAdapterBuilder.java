@@ -5,8 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
+import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.audio.SoundEffect;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
+import com.shr4pnel.casino.blackjack.BlackjackGame;
+import com.shr4pnel.casino.scene.Blackjack;
+import com.shr4pnel.casino.scene.ManagedButtonGame;
 import com.shr4pnel.casino.scene.SceneManager;
 import com.shr4pnel.casino.util.AsciiArt;
 
@@ -19,9 +23,11 @@ public class TypingAdapterBuilder {
     private Window root;
     private TypingLabel labelToAdd;
     private int delayMillis = 2500;
+    private int delayPerChar = 125;
     private boolean stopSound = true;
     private int height = 0;
     private String eventName;
+    private AsciiArt asciiArt = new AsciiArt();
 
     /**
      * Set a sound to play at the end of the TypingLabel
@@ -86,6 +92,11 @@ public class TypingAdapterBuilder {
         return this;
     }
 
+    public TypingAdapterBuilder delayPerChar(int delay) {
+        delayPerChar = delay;
+        return this;
+    }
+
     /**
      * Build the typing adapter, with previously set parameters
      * @return A TypingAdapter
@@ -129,13 +140,13 @@ public class TypingAdapterBuilder {
              */
             @Override
             public void event(String event) {
-                if (eventName.equals("start_art")) {
-                    new Thread(() -> {
+                switch (eventName) {
+                    case "start_art" -> new Thread(() -> {
                         root.clear();
-                        for (Label l : AsciiArt.artAsTypingLabelArray()) {
+                        for (Label l : asciiArt.artAsTypingLabelArray()) {
                             try {
                                 root.add(l).row();
-                                Thread.sleep(125);
+                                Thread.sleep(delayMillis);
                             } catch (InterruptedException e) {
                                 Gdx.app.log("TypingAdapterBuilder", "Interrupted while waiting on thread in event()", e);
                             }
@@ -148,6 +159,14 @@ public class TypingAdapterBuilder {
                         root.clear();
                         SceneManager.setActiveScene(SceneManager.Scene.MENU);
                     }).start();
+
+                    case "bjdeal_complete" -> {
+                        Casino c = Casino.getInstance();
+                        Blackjack ui = (Blackjack) c.getGameInstance(SceneManager.Scene.BLACKJACK);
+                        BlackjackGame g = ui.getGameInstance();
+                        g.nextPhase();
+                        ui.updatePhase();
+                    }
                 }
             }
         };
