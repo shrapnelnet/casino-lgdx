@@ -25,4 +25,12 @@ public abstract class Card {
     public int getCardValue() {
         return cardValue;
     }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
 }

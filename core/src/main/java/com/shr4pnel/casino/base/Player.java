@@ -50,8 +50,15 @@ public abstract class Player {
      * @param l
      */
     public void incrementBet(Long l) {
-        if ((bet + l) > chips || (bet + l) < 0)
+        if ((bet + l) < 0) {
+            bet = 0L;
             return;
+        }
+
+        if ((bet + l) > chips) {
+            bet = chips;
+            return;
+        }
 
         bet += l;
     }
@@ -70,5 +77,9 @@ public abstract class Player {
      */
     public void add(List<Card> cards) {
         hand.addAll(cards);
+    }
+
+    public List<Card> getPlayerHand() {
+        return hand;
     }
 }

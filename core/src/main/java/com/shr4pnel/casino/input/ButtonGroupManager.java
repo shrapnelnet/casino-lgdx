@@ -1,4 +1,4 @@
-package com.shr4pnel.casino.util;
+package com.shr4pnel.casino.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -23,16 +23,9 @@ public class ButtonGroupManager {
     private final ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
     private TextButton activeButton;
     private ButtonGroupListener listener;
-    private final Map<String, Long> incrementStringToLong = new HashMap<>();
 
     public ButtonGroupManager(TextButton... t) {
         setMenuButtonGroup(t);
-        incrementStringToLong.put("---", -100L);
-        incrementStringToLong.put("--", -10L);
-        incrementStringToLong.put("-", -1L);
-        incrementStringToLong.put("+", 1L);
-        incrementStringToLong.put("++", 10L);
-        incrementStringToLong.put("+++", 100L);
     }
 
     /**
@@ -58,6 +51,8 @@ public class ButtonGroupManager {
      * @param activeButton The button to be hovered over
      */
     public void setActiveButton(TextButton activeButton) {
+        if (activeButton == null)
+            return;
         this.activeButton = activeButton;
         menuButtonGroup.setChecked(activeButton.getName());
         if (listener != null)
@@ -71,6 +66,9 @@ public class ButtonGroupManager {
     private TextButton getLeftToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0)
+            return null;
 
         int index = getToggledButtonIndex();
 
@@ -89,6 +87,10 @@ public class ButtonGroupManager {
     private TextButton getRightToggledButton() {
         int nextIndex;
         int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0) {
+            return null;
+        }
 
         int index = getToggledButtonIndex();
 
@@ -114,6 +116,8 @@ public class ButtonGroupManager {
      */
     public boolean left() {
         TextButton nextButton = getLeftToggledButton();
+        if (nextButton == null)
+            return false;
         setActiveButton(nextButton);
         return true;
     }
@@ -125,6 +129,8 @@ public class ButtonGroupManager {
      */
     public boolean right() {
         TextButton nextButton = getRightToggledButton();
+        if (nextButton == null)
+            return false;
         setActiveButton(nextButton);
         return true;
     }
@@ -148,31 +154,10 @@ public class ButtonGroupManager {
             }
 
             case "Settings" -> true;
-
-            case "---", "--", "-", "+", "++", "+++" -> incrementBet(activeButton.getName());
-
             default -> false;
         };
     }
 
-    /**
-     * Increment the displayed bet
-     * todo MOVE THIS TO SPECIFIC IMPLEMENTATION SO WE DO NOT HAVE TO CAST... MAYBE?
-     * @param name The name of the button, assigned when they are created
-     * @return True, when incrementing is complete
-     * @see Blackjack
-     */
-    private boolean incrementBet(String name) {
-        Casino c = Casino.getInstance();
-        ManagedButtonGame scene = c.getGameInstance(SceneManager.getActiveScene());
-        Game g = scene.getGameInstance();
-        Player p = g.getPlayer();
-        p.incrementBet(incrementStringToLong.get(name));
-
-        if (scene instanceof Blackjack)
-            ((Blackjack) scene).updateChipDisplay();
-        return true;
-    }
 
     /**
      * Assign a listener to the buttongroupmanager
