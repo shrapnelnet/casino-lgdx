@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.shr4pnel.casino.Casino;
+import com.shr4pnel.casino.base.Card;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
 import com.shr4pnel.casino.blackjack.BlackjackPlayer;
 import com.shr4pnel.casino.builders.LabelBuilder;
@@ -154,33 +155,36 @@ public class Blackjack extends ManagedButtonGame {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
     }
 
-    private void deal() {
-        // blank all buttons in ui
-        setAllButtons();
-
+    public Table drawCards(BlackjackPlayer p) {
         // fetch user and ai hands as arrays (this is why logic needs to fire before UI code)
-        String[] playerCards = asciiArt.getCards(game.getPlayer().getPlayerHand());
-        String[] aiCards = asciiArt.getCards(game.getAi().getPlayerHand());
-
-        // containers for player and AI hands
-        Table playerContainer = new Table(StyleManager.getSkin());
-        Table aiContainer = new Table(StyleManager.getSkin());
-
+        if (!p.isPlayerControlled()) {
+            return drawCardsAi();
+        }
         TypingLabel l;
-        Table t;
-        for (String card: playerCards) {
+        Table t, container;
+        container = new Table(StyleManager.getSkin());
+        String[] cards = asciiArt.getCards(p);
+        for (String card: cards) {
             l = labelBuilder
                 .start(card)
                 .build();
             t = new Table(StyleManager.getSkin());
             l.setFontScale(0.5f);
             t.add(l);
-            playerContainer.add(t);
-            playerContainer.add().width(15);
+            container.add(t);
+            container.add().width(15);
         }
+        return container;
+    }
 
-        TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
+    public Table drawCardsAi() {
         boolean firstIter = true;
+        Table t;
+        Table aiContainer = new Table(StyleManager.getSkin());
+        TypingLabel l;
+        String[] aiCards = asciiArt.getCards(game.getAi());
+        TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
+
         for (String card: aiCards) {
             t = new Table(StyleManager.getSkin());
 
@@ -215,6 +219,16 @@ public class Blackjack extends ManagedButtonGame {
             aiContainer.add(t);
             aiContainer.add().width(15);
         }
+        return aiContainer;
+    }
+
+    private void deal() {
+        // blank all buttons in ui
+        setAllButtons();
+
+        // containers for player and AI hands
+        Table playerContainer = drawCards(game.getPlayer());
+        Table aiContainer = drawCards(game.getAi());
 
         playerHandRoot.add(playerContainer);
         aiHandRoot.add(aiContainer).padBottom(50);
@@ -225,5 +239,9 @@ public class Blackjack extends ManagedButtonGame {
         final BlackjackGame.BlackjackPhase currentPhase = game.getPhase();
         phase.setText("Phase: {SLIDE}" + prettyPhase + "{ENDSLIDE}");
         setPlayerButtonPaneByPhase();
+    }
+
+    public void hit() {
+        game.hit();
     }
 }
