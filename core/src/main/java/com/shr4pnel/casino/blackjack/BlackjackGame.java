@@ -20,6 +20,7 @@ public class BlackjackGame extends Game {
         phaseToString.put(BlackjackPhase.PLAYER_TURN, "Player's turn");
         phaseToString.put(BlackjackPhase.DEALER_TURN, "Dealer's turn");
         phaseToString.put(BlackjackPhase.SHOWDOWN, "Showdown!");
+        phaseToString.put(BlackjackPhase.BUST, "BUSTED!!!!");
 
         nextPhaseMap.put(BlackjackPhase.BET, BlackjackPhase.DEAL);
         nextPhaseMap.put(BlackjackPhase.DEAL, BlackjackPhase.PLAYER_TURN);
@@ -33,7 +34,8 @@ public class BlackjackGame extends Game {
         DEAL,
         PLAYER_TURN,
         DEALER_TURN,
-        SHOWDOWN
+        SHOWDOWN,
+        BUST
     }
 
     @Override
@@ -58,8 +60,13 @@ public class BlackjackGame extends Game {
     /**
      * Draws a card to the player's deck
      */
-    public void hit() {
+    public boolean hit() {
+        if (player.getHandValue() > 21) {
+            System.out.println("BUST!!!!!");
+            return false;
+        }
         player.add(deck.drawCard());
+        return true;
     }
 
     public void hit(int n) {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.rafaskoberg.gdx.typinglabel.TypingAdapter;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.shr4pnel.casino.Casino;
-import com.shr4pnel.casino.base.Card;
 import com.shr4pnel.casino.blackjack.BlackjackGame;
 import com.shr4pnel.casino.blackjack.BlackjackPlayer;
 import com.shr4pnel.casino.builders.LabelBuilder;
@@ -14,9 +13,6 @@ import com.shr4pnel.casino.input.BlackjackButtonManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
 import com.shr4pnel.casino.util.TextureManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Handles the UI for blackjack. logic should be kept to a minimum in here!
@@ -155,11 +151,11 @@ public class Blackjack extends ManagedButtonGame {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
     }
 
-    public Table drawCards(BlackjackPlayer p) {
+    public Table redrawCards(BlackjackPlayer p) {
         // fetch user and ai hands as arrays (this is why logic needs to fire before UI code)
-        if (!p.isPlayerControlled()) {
-            return drawCardsAi();
-        }
+        if (!p.isPlayerControlled())
+            return redrawCardsAi();
+
         TypingLabel l;
         Table t, container;
         container = new Table(StyleManager.getSkin());
@@ -177,7 +173,7 @@ public class Blackjack extends ManagedButtonGame {
         return container;
     }
 
-    public Table drawCardsAi() {
+    public Table redrawCardsAi() {
         boolean firstIter = true;
         Table t;
         Table aiContainer = new Table(StyleManager.getSkin());
@@ -227,8 +223,8 @@ public class Blackjack extends ManagedButtonGame {
         setAllButtons();
 
         // containers for player and AI hands
-        Table playerContainer = drawCards(game.getPlayer());
-        Table aiContainer = drawCards(game.getAi());
+        Table playerContainer = redrawCards(game.getPlayer());
+        Table aiContainer = redrawCards(game.getAi());
 
         playerHandRoot.add(playerContainer);
         aiHandRoot.add(aiContainer).padBottom(50);
@@ -242,6 +238,12 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     public void hit() {
-        game.hit();
+        boolean success = game.hit();
+        if (!success)
+            return;
+
+        Table newCardDisplay = redrawCards(game.getPlayer());
+        playerHandRoot.clear();
+        playerHandRoot.add(newCardDisplay);
     }
 }

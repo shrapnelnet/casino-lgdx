@@ -2,6 +2,7 @@ package com.shr4pnel.casino.util;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.shr4pnel.casino.base.Card;
+import com.shr4pnel.casino.base.Player;
 import com.shr4pnel.casino.style.StyleManager;
 
 import java.util.ArrayList;
@@ -156,6 +157,15 @@ public class AsciiArt {
     }
 
     public String[] getCards(List<Card> hand) {
+        List<String> playerCards = new ArrayList<>();
+        for (Card c: hand) {
+            playerCards.add(getCard(c));
+        }
+        return playerCards.toArray(String[]::new);
+    }
+
+    public String[] getCards(Player p) {
+        List<Card> hand = p.getPlayerHand();
         List<String> playerCards = new ArrayList<>();
         for (Card c: hand) {
             playerCards.add(getCard(c));

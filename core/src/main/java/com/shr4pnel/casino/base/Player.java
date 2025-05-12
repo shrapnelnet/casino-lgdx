@@ -82,4 +82,8 @@ public abstract class Player {
     public List<Card> getPlayerHand() {
         return hand;
     }
+
+    public boolean isPlayerControlled() {
+        return playerControlled;
+    }
 }
