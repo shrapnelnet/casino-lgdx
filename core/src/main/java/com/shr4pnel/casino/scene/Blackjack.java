@@ -22,7 +22,7 @@ import com.shr4pnel.casino.util.TextureManager;
  */
 public class Blackjack extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
-    private TextButton hit, stand, split, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet;
+    private TextButton hit, stand, split, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet, restart;
     private Label chipCount;
     private TypingLabel phase;
     private Image cardPlain;
@@ -45,7 +45,6 @@ public class Blackjack extends ManagedButtonGame {
         status = new Table(StyleManager.getSkin());
 
         game = new BlackjackGame();
-        chipCount = new Label("Bet: 0/" + game.getPlayer().getChips(), StyleManager.getSkin());
         phase = labelBuilder
             .start("Phase: {SLIDE}" + game.getPhaseAsString() + "{ENDSLIDE}")
             .build();
@@ -70,10 +69,9 @@ public class Blackjack extends ManagedButtonGame {
         largeDecreaseBet = newTextButton("---");
         largeIncreaseBet = newTextButton("+++");
         bet = newTextButton("Bet");
+        restart = newTextButton("Restart");
 
         setPlayerButtonPaneByPhase();
-        chipTable.add(chipCount).width(190);
-        playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
         root.add(status).expand().top().left().row();
         root.add(aiHandRoot).top().row();
         root.add(playerHandRoot).bottom().row();
@@ -144,11 +142,22 @@ public class Blackjack extends ManagedButtonGame {
             case BET -> bet();
             case DEAL -> deal();
             case PLAYER_TURN -> setAllButtons(hit, stand, doubleDown);
+            case BUST -> bust();
         }
+    }
+
+    private void bust() {
+        setAllButtons(restart);
+        BlackjackPlayer p = game.getPlayer();
+        p.incrementChips(-p.getBet());
     }
 
     private void bet() {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
+        chipTable.clear();
+        chipCount = new Label("Bet: 0/" + game.getPlayer().getChips(), StyleManager.getSkin());
+        chipTable.add(chipCount).width(190);
+        playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
     }
 
     public Table redrawCards(BlackjackPlayer p) {
@@ -232,18 +241,30 @@ public class Blackjack extends ManagedButtonGame {
 
     public void updatePhase() {
         final String prettyPhase = game.getPhaseAsString();
-        final BlackjackGame.BlackjackPhase currentPhase = game.getPhase();
         phase.setText("Phase: {SLIDE}" + prettyPhase + "{ENDSLIDE}");
         setPlayerButtonPaneByPhase();
     }
 
     public void hit() {
         boolean success = game.hit();
-        if (!success)
+        if (!success) {
+            game.setPhase(BlackjackGame.BlackjackPhase.BUST);
+            updatePhase();
+            setPlayerButtonPaneByPhase();
             return;
+        }
+
 
         Table newCardDisplay = redrawCards(game.getPlayer());
         playerHandRoot.clear();
         playerHandRoot.add(newCardDisplay);
+    }
+
+    public void restart() {
+        game = new BlackjackGame();
+        playerHandRoot.clear();
+        aiHandRoot.clear();
+        playerButtonRoot.clear();
+        setPlayerButtonPaneByPhase();
     }
 }
