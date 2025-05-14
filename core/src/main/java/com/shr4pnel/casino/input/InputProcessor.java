@@ -27,6 +27,7 @@ public abstract class InputProcessor extends InputAdapter {
             case Keys.LEFT, Keys.A -> manager.left();
             case Keys.RIGHT, Keys.D -> manager.right();
             case Keys.Z, Keys.ENTER, Keys.NUMPAD_ENTER -> manager.enter();
+            case Keys.ESCAPE -> manager.exit();
             default -> false;
         };
     }
