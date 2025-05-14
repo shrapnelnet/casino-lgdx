@@ -38,18 +38,20 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private Stage introStage, menuStage, blackjackStage;
+    private Stage introStage, menuStage, blackjackStage, navigationStage;
     private Window introRoot;
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot, blackjackRoot;
+    private Table menuRoot, blackjackRoot, navigationRoot;
     private Blackjack blackjack;
     private Menu menu;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
+
+    private Navigation navigation;
 
     @Override
     public void create() {
@@ -60,6 +62,7 @@ public class Casino extends ApplicationAdapter {
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
+        navigationStage = new Stage(viewport);
 
         // preload textures
         textureManager = new TextureManager();
@@ -85,9 +88,14 @@ public class Casino extends ApplicationAdapter {
         blackjackRoot = blackjack.get();
         blackjackStage.addActor(blackjackRoot);
 
+        navigation = new Navigation();
+        navigationRoot = navigation.get();
+        navigationStage.addActor(navigationRoot);
+
         // store scene instances in map for scenemanager accesses and implicit ownership within Casino
         sceneInstanceMap.put(SceneManager.Scene.MENU, menu);
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
+        sceneInstanceMap.put(SceneManager.Scene.NAVIGATION, navigation);
     }
 
     /**
@@ -149,6 +157,7 @@ public class Casino extends ApplicationAdapter {
                 case INTRO -> renderIntro();
                 case BLACKJACK -> renderBlackjack();
                 case MENU -> renderMenu();
+                case NAVIGATION -> renderNavigation();
             }
         }
     }
@@ -193,6 +202,12 @@ public class Casino extends ApplicationAdapter {
         ScreenUtils.clear(Color.BLACK);
         menuStage.act(Gdx.graphics.getDeltaTime());
         menuStage.draw();
+    }
+
+    private void renderNavigation() {
+        ScreenUtils.clear(Color.BLACK);
+        navigationStage.act(Gdx.graphics.getDeltaTime());
+        navigationStage.draw();
     }
 
     public static ConsoleManager getActiveConsole() {

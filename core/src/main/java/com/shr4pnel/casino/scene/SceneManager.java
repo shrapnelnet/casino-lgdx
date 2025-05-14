@@ -5,6 +5,9 @@ import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.input.BlackjackInputProcessor;
 import com.shr4pnel.casino.input.MenuInputProcessor;
+import com.shr4pnel.casino.input.NavigationInputProcessor;
+
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +26,15 @@ public class SceneManager {
         sceneToPrettyName.put(Scene.BLACKJACK, "Blackjack");
         sceneToPrettyName.put(Scene.POKER, "Poker");
         sceneToPrettyName.put(Scene.MENU, "Menu");
+        sceneToPrettyName.put(Scene.NAVIGATION, "Navigation");
 
         prettyNameToScene = new HashMap<>();
         prettyNameToScene.put("intro", Scene.INTRO);
         prettyNameToScene.put("blackjack", Scene.BLACKJACK);
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
-        setActiveScene(Scene.BLACKJACK);
+        prettyNameToScene.put("navigation", Scene.NAVIGATION);
+        setActiveScene(Scene.MENU);
     }
 
     /**
@@ -66,6 +71,16 @@ public class SceneManager {
                 Gdx.input.setInputProcessor(new BlackjackInputProcessor(blackjackInstance));
                 Casino.getActiveConsole().reset();
             }
+            case NAVIGATION -> {
+                SoundEffectHelper.stopAll();
+
+                ManagedButtonScene navigationInstance = Casino
+                    .getInstance()
+                    .getSceneInstance(Scene.NAVIGATION);
+
+                Gdx.input.setInputProcessor(new NavigationInputProcessor(navigationInstance));
+                Casino.getActiveConsole().reset();
+            }
         }
         SceneManager.activeScene = activeScene;
     }
@@ -91,6 +106,7 @@ public class SceneManager {
         INTRO,
         BLACKJACK,
         POKER,
-        MENU
+        MENU,
+        NAVIGATION
     }
 }

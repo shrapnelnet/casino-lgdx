@@ -144,7 +144,17 @@ public class ButtonGroupManager {
         TextButton activeButton = getActiveButton();
         return switch (activeButton.getName()) {
             case "Play" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.NAVIGATION);
+                yield true;
+            }
+
+            case "Blackjack" -> {
                 SceneManager.setActiveScene(SceneManager.Scene.BLACKJACK);
+                yield true;
+            }
+
+            case "Back" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.MENU);
                 yield true;
             }
 
@@ -156,6 +166,10 @@ public class ButtonGroupManager {
             case "Settings" -> true;
             default -> false;
         };
+    }
+    public boolean exit(){
+        Gdx.app.exit();
+        return false;
     }
 
 
