@@ -199,7 +199,7 @@ public class ButtonGroupManager {
     public boolean enter() {
         TextButton activeButton = getActiveButton();
         return switch (activeButton.getName()) {
-            case "Play" -> {
+            case "Play", "Return" -> {
                 SceneManager.setActiveScene(SceneManager.Scene.NAVIGATION);
                 yield true;
             }
