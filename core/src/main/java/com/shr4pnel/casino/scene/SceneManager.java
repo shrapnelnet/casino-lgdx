@@ -6,7 +6,7 @@ import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.input.BlackjackInputProcessor;
 import com.shr4pnel.casino.input.MenuInputProcessor;
 import com.shr4pnel.casino.input.NavigationInputProcessor;
-
+import com.shr4pnel.casino.input.PokerInputProcessor;
 
 
 import java.util.HashMap;
@@ -81,6 +81,16 @@ public class SceneManager {
                 Gdx.input.setInputProcessor(new NavigationInputProcessor(navigationInstance));
                 Casino.getActiveConsole().reset();
             }
+            case POKER -> {
+                SoundEffectHelper.stopAll();
+
+                ManagedButtonScene pokerInstance = Casino
+                    .getInstance()
+                    .getSceneInstance(Scene.POKER);
+
+                Gdx.input.setInputProcessor(new PokerInputProcessor(pokerInstance));
+                Casino.getActiveConsole().reset();
+            }
         }
         SceneManager.activeScene = activeScene;
     }
@@ -105,8 +115,8 @@ public class SceneManager {
     public enum Scene {
         INTRO,
         BLACKJACK,
-        POKER,
         MENU,
-        NAVIGATION
+        NAVIGATION,
+        POKER
     }
 }
