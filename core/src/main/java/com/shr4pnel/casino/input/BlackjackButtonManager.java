@@ -67,6 +67,18 @@ public class BlackjackButtonManager extends ButtonGroupManager {
         return true;
     }
 
+    private boolean hit() {
+        getScene().hit();
+        return true;
+    }
+
+    private boolean restart() {
+        getGame().setPhase(BlackjackGame.BlackjackPhase.BET);
+        getScene().restart();
+        getScene().updatePhase();
+        return true;
+    }
+
     @Override
     public boolean enter() {
         /*
@@ -84,6 +96,8 @@ public class BlackjackButtonManager extends ButtonGroupManager {
         return switch (active.getName()) {
             case "---", "--", "-", "+", "++", "+++" -> incrementBet(active.getName());
             case "Bet" -> bet();
+            case "Hit" -> hit();
+            case "Restart" -> restart();
             default -> false;
         };
     }

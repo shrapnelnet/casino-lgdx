@@ -29,7 +29,7 @@ public class SceneManager {
         prettyNameToScene.put("blackjack", Scene.BLACKJACK);
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
-        setActiveScene(Scene.MENU);
+        setActiveScene(Scene.BLACKJACK);
     }
 
     /**
