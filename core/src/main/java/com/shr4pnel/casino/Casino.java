@@ -38,15 +38,16 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private Stage introStage, menuStage, blackjackStage;
+    private Stage introStage, menuStage, blackjackStage, rouletteStage;
     private Window introRoot;
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot, blackjackRoot;
+    private Table menuRoot, blackjackRoot, rouletteRoot;
     private Blackjack blackjack;
+    private Roulette roulette;
     private Menu menu;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
@@ -60,6 +61,7 @@ public class Casino extends ApplicationAdapter {
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
+        rouletteStage = new Stage(viewport);
 
         // preload textures
         textureManager = new TextureManager();
@@ -85,9 +87,15 @@ public class Casino extends ApplicationAdapter {
         blackjackRoot = blackjack.get();
         blackjackStage.addActor(blackjackRoot);
 
+        // load roulette scene2d markup
+        roulette = new Roulette();
+        rouletteRoot = roulette.get();
+        rouletteStage.addActor(rouletteRoot);
+
         // store scene instances in map for scenemanager accesses and implicit ownership within Casino
         sceneInstanceMap.put(SceneManager.Scene.MENU, menu);
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
+        sceneInstanceMap.put(SceneManager.Scene.ROULETTE, roulette);
     }
 
     /**
