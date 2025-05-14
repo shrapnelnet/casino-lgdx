@@ -35,8 +35,8 @@ public class Navigation extends ManagedButtonScene {
 
         Blackjack = new TextButton("Blackjack", StyleManager.getSkin(), "toggle");
         Poker = new TextButton("Poker", StyleManager.getSkin(), "toggle");
-        Slots = new TextButton("Slots", StyleManager.getSkin(), "toggle");
         Roulette = new TextButton("Roulette", StyleManager.getSkin(), "toggle");
+        Slots = new TextButton("Slots", StyleManager.getSkin(), "toggle");
         Lootboxes = new TextButton("Lootboxes", StyleManager.getSkin(), "toggle");
         Back = new TextButton("Back", StyleManager.getSkin(), "toggle");
 
@@ -47,10 +47,10 @@ public class Navigation extends ManagedButtonScene {
         Lootboxes.setName("Lootboxes");
         Back.setName("Back");
 
-        textButtonGroup.add(Blackjack, Poker,Slots,Roulette,Lootboxes,Back);
+        textButtonGroup.add(Blackjack, Poker,Roulette,Slots,Lootboxes,Back);
         textButtonGroup.setMaxCheckCount(1);
         textButtonGroup.setMinCheckCount(1);
-        buttonGroupManager = new ButtonGroupManager(Blackjack, Poker,Slots,Roulette,Lootboxes ,Back);
+        buttonGroupManager = new ButtonGroupManager(Blackjack, Poker,Roulette,Slots,Lootboxes ,Back);
         buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
 
         labelRoot.add(label).center();
@@ -61,8 +61,8 @@ public class Navigation extends ManagedButtonScene {
         root.add(labelRoot).colspan(3).center().row();
         root.add(Blackjack).pad(10);
         root.add(Poker).pad(10).row();
-        root.add(Slots).pad(10);
-        root.add(Roulette).pad(10).row();
+        root.add(Roulette).pad(10);
+        root.add(Slots).pad(10).row();
         root.add(Lootboxes).pad(10);
         root.add(Back).pad(10).row();
 

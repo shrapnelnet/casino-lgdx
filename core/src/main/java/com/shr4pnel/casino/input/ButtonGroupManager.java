@@ -112,10 +112,12 @@ public class ButtonGroupManager {
 
         int index = getToggledButtonIndex();
 
-        if (index == menuButtonGroupSize - 1)
-            nextIndex = 0;
+        if (index == 0)
+            nextIndex = menuButtonGroupSize - 2;
+        else if (index == 1)
+            nextIndex = menuButtonGroupSize - 1;
         else
-            nextIndex = index + 1;
+            nextIndex = index - 2;
 
         return menuButtonGroup.getButtons().get(nextIndex);
     }
@@ -129,10 +131,12 @@ public class ButtonGroupManager {
 
         int index = getToggledButtonIndex();
 
-        if (index == 0)
-            nextIndex = menuButtonGroupSize - 1;
+        if (index == menuButtonGroupSize - 2)
+        nextIndex = 0;
+        else if (index == menuButtonGroupSize - 1)
+            nextIndex = 1;
         else
-            nextIndex = index - 1;
+        nextIndex = index + 2;
 
         return menuButtonGroup.getButtons().get(nextIndex);
     }
