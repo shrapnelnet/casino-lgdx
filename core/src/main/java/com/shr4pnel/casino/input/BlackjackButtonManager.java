@@ -79,13 +79,20 @@ public class BlackjackButtonManager extends ButtonGroupManager {
         return true;
     }
 
+    private boolean stand() {
+        getGame().setPhase(BlackjackGame.BlackjackPhase.DEALER_TURN);
+        getScene().updatePhase();
+        getScene().stand();
+        return true;
+    }
+
     @Override
     public boolean enter() {
         /*
         I prevent enter from being pressed on a button that is no longer visible (Bet)
         if i am not here i can skip the dealing phase and cause all sorts of nasty NPEs...
          */
-        if (getGame().getPhase() == BlackjackGame.BlackjackPhase.DEAL)
+        if (getGame().getPhase().equals(BlackjackGame.BlackjackPhase.DEAL))
             return false;
 
         boolean handled = super.enter();
@@ -98,6 +105,7 @@ public class BlackjackButtonManager extends ButtonGroupManager {
             case "Bet" -> bet();
             case "Hit" -> hit();
             case "Restart" -> restart();
+            case "Stand" -> stand();
             default -> false;
         };
     }

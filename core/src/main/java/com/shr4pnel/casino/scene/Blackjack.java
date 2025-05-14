@@ -14,6 +14,8 @@ import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
 import com.shr4pnel.casino.util.TextureManager;
 
+import static com.shr4pnel.casino.blackjack.BlackjackGame.BlackjackPhase.WIN;
+
 /**
  * Handles the UI for blackjack. logic should be kept to a minimum in here!
  * @author shrapnelnet
@@ -162,9 +164,6 @@ public class Blackjack extends ManagedButtonGame {
 
     public Table redrawCards(BlackjackPlayer p) {
         // fetch user and ai hands as arrays (this is why logic needs to fire before UI code)
-        if (!p.isPlayerControlled())
-            return redrawCardsAi();
-
         TypingLabel l;
         Table t, container;
         container = new Table(StyleManager.getSkin());
@@ -182,14 +181,15 @@ public class Blackjack extends ManagedButtonGame {
         return container;
     }
 
-    public Table redrawCardsAi() {
-        boolean firstIter = true;
+    public Table redrawCardsAi(boolean hideCard) {
+        boolean firstIter = hideCard;
         Table t;
         Table aiContainer = new Table(StyleManager.getSkin());
         TypingLabel l;
         String[] aiCards = asciiArt.getCards(game.getAi());
         TypingAdapterBuilder typingAdapterBuilder = new TypingAdapterBuilder();
 
+        aiContainer.clear();
         for (String card: aiCards) {
             t = new Table(StyleManager.getSkin());
 
@@ -233,7 +233,7 @@ public class Blackjack extends ManagedButtonGame {
 
         // containers for player and AI hands
         Table playerContainer = redrawCards(game.getPlayer());
-        Table aiContainer = redrawCards(game.getAi());
+        Table aiContainer = redrawCardsAi(true);
 
         playerHandRoot.add(playerContainer);
         aiHandRoot.add(aiContainer).padBottom(50);
@@ -246,14 +246,16 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     public void hit() {
+        if (game.getPhase().equals(BlackjackGame.BlackjackPhase.DEALER_TURN))
+            return;
+
         boolean success = game.hit();
+
         if (!success) {
             game.setPhase(BlackjackGame.BlackjackPhase.BUST);
             updatePhase();
             setPlayerButtonPaneByPhase();
-            return;
         }
-
 
         Table newCardDisplay = redrawCards(game.getPlayer());
         playerHandRoot.clear();
@@ -266,5 +268,28 @@ public class Blackjack extends ManagedButtonGame {
         aiHandRoot.clear();
         playerButtonRoot.clear();
         setPlayerButtonPaneByPhase();
+    }
+
+    public void showWinner(BlackjackPlayer p) {
+        if (p.equals(game.getPlayer())) {
+            game.setPhase(BlackjackGame.BlackjackPhase.WIN);
+            return;
+        }
+        game.setPhase(BlackjackGame.BlackjackPhase.LOSE);
+    }
+
+    public void stand() {
+        game.dealerTurn();
+        Table newAiHand = redrawCardsAi(false);
+
+        aiHandRoot.clear();
+        aiHandRoot.add(newAiHand);
+
+        game.nextPhase();
+        updatePhase();
+
+        BlackjackPlayer winner = game.getWinner();
+        showWinner(winner);
+        updatePhase();
     }
 }
