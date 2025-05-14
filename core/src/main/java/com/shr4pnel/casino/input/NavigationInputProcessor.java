@@ -21,8 +21,8 @@ public class NavigationInputProcessor extends InputProcessor {
             return true;
 
         return switch (keycode) {
-            case Keys.UP -> manager.up();
-            case Keys.DOWN -> manager.down();
+            case Keys.UP,Keys.W -> manager.up();
+            case Keys.DOWN, Keys.S -> manager.down();
             default -> false;
         };
     }
