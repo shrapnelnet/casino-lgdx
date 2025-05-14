@@ -30,9 +30,9 @@ public class SceneManager {
         sceneToPrettyName.put(Scene.POKER, "Poker");
         sceneToPrettyName.put(Scene.MENU, "Menu");
         sceneToPrettyName.put(Scene.NAVIGATION, "Navigation");
-        sceneToPrettyName.put(Scene.SLOTS, "Navigation");
-        sceneToPrettyName.put(Scene.ROULETTE, "Navigation");
-        sceneToPrettyName.put(Scene.LOOTBOXES, "Navigation");
+        sceneToPrettyName.put(Scene.SLOTS, "Slots");
+        sceneToPrettyName.put(Scene.ROULETTE, "Roulette");
+        sceneToPrettyName.put(Scene.LOOTBOXES, "Lootboxes");
 
         prettyNameToScene = new HashMap<>();
         prettyNameToScene.put("intro", Scene.INTRO);
@@ -40,9 +40,9 @@ public class SceneManager {
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
         prettyNameToScene.put("navigation", Scene.NAVIGATION);
-        prettyNameToScene.put("navigation", Scene.SLOTS);
-        prettyNameToScene.put("navigation", Scene.ROULETTE);
-        prettyNameToScene.put("navigation", Scene.LOOTBOXES);
+        prettyNameToScene.put("slots", Scene.SLOTS);
+        prettyNameToScene.put("roulette", Scene.ROULETTE);
+        prettyNameToScene.put("lootboxes", Scene.LOOTBOXES);
         setActiveScene(Scene.MENU);
     }
 
