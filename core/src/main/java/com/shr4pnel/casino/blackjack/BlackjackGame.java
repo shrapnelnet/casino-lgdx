@@ -21,6 +21,8 @@ public class BlackjackGame extends Game {
         phaseToString.put(BlackjackPhase.DEALER_TURN, "Dealer's turn");
         phaseToString.put(BlackjackPhase.SHOWDOWN, "Showdown!");
         phaseToString.put(BlackjackPhase.BUST, "BUSTED!!!!");
+        phaseToString.put(BlackjackPhase.WIN, "You win!");
+        phaseToString.put(BlackjackPhase.LOSE, "You lose!");
 
         nextPhaseMap.put(BlackjackPhase.BET, BlackjackPhase.DEAL);
         nextPhaseMap.put(BlackjackPhase.DEAL, BlackjackPhase.PLAYER_TURN);
@@ -35,7 +37,9 @@ public class BlackjackGame extends Game {
         PLAYER_TURN,
         DEALER_TURN,
         SHOWDOWN,
-        BUST
+        BUST,
+        WIN,
+        LOSE
     }
 
     @Override
@@ -54,19 +58,21 @@ public class BlackjackGame extends Game {
 
     private void hit(BlackjackPlayer p, int n) {
         for (int i = 0; i < n; ++i)
-            hit(ai);
+            hit(p);
     }
 
     /**
      * Draws a card to the player's deck
      */
     public boolean hit() {
-        if (player.getHandValue() > 21) {
-            System.out.println("BUST!!!!!");
-            return false;
-        }
-        player.add(deck.drawCard());
-        return true;
+        boolean status = true;
+        BlackjackCard card = (BlackjackCard) deck.drawCard();
+
+        if (card.getCardValue() + player.getHandValue() > 21)
+            status = false;
+
+        player.add(card);
+        return status;
     }
 
     public void hit(int n) {
@@ -94,5 +100,18 @@ public class BlackjackGame extends Game {
     public void deal() {
         hit(2);
         hit(ai, 2);
+    }
+
+    public void dealerTurn() {
+        while (ai.getHandValue() < 17 && ai.getHandValue() < player.getHandValue()) {
+            hit(ai);
+        }
+    }
+
+    public BlackjackPlayer getWinner() {
+        if (player.getHandValue() > ai.getHandValue())
+            return player;
+
+        return ai;
     }
 }
