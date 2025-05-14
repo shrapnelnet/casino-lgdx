@@ -1,5 +1,6 @@
 package com.shr4pnel.casino.input;
 
+import com.badlogic.gdx.Input.Keys;
 import com.shr4pnel.casino.scene.ManagedButtonScene;
 
 /**
@@ -8,5 +9,21 @@ import com.shr4pnel.casino.scene.ManagedButtonScene;
 public class NavigationInputProcessor extends InputProcessor {
     public NavigationInputProcessor(ManagedButtonScene s) {
         super(s);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (manager == null)
+            return false;
+
+        boolean success = super.keyDown(keycode);
+        if (success)
+            return true;
+
+        return switch (keycode) {
+            case Keys.UP -> manager.up();
+            case Keys.DOWN -> manager.down();
+            default -> false;
+        };
     }
 }
