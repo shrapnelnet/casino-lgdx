@@ -14,8 +14,6 @@ import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
 import com.shr4pnel.casino.util.TextureManager;
 
-import static com.shr4pnel.casino.blackjack.BlackjackGame.BlackjackPhase.WIN;
-
 /**
  * Handles the UI for blackjack. logic should be kept to a minimum in here!
  * @author shrapnelnet
@@ -100,21 +98,6 @@ public class Blackjack extends ManagedButtonGame {
         } else {
             buttonGroupManager.setMenuButtonGroup(t);
         }
-    }
-
-    private Image newBlankCard() {
-        return textureManager.getImage("card/card.jpg");
-    }
-
-    /**
-     * Create a new text button
-     * @param content The content of the button
-     * @return A correctly built text button
-     */
-    private TextButton newTextButton(String content) {
-        TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
-        t.setName(content);
-        return t;
     }
 
     /**
