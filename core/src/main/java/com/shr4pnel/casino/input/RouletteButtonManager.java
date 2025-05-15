@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.shr4pnel.casino.Casino;
 import com.shr4pnel.casino.base.Player;
 import com.shr4pnel.casino.roulette.RouletteGame;
+import com.shr4pnel.casino.roulette.RoulettePlayer;
 import com.shr4pnel.casino.scene.Roulette;
 import com.shr4pnel.casino.scene.SceneManager;
 
@@ -33,47 +34,69 @@ public class RouletteButtonManager extends ButtonGroupManager {
     }
 
     public void odd(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.ODD);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.ODD);
     }
 
     public void even(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.EVEN);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.EVEN);
     }
 
     public void red(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.RED);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.RED);
     }
 
     public void black(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.BLACK);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.BLACK);
     }
 
     public void first(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.FIRST);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.FIRST);
     }
 
     public void second(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.SECOND);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.SECOND);
     }
 
     public void third(){
-        getGame().setPlayerBetType(RouletteGame.RouletteBetType.THIRD);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.setPlayerBetType(RouletteGame.RouletteBetType.THIRD);
     }
 
     public void increaseChosenNumber(){
-        getGame().incrementPlayerBet((short) 1);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.incrementPlayerBet((short) 1);
     }
 
     public void decreaseChosenNumber(){
-        getGame().decrementPlayerBet((short) 1);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.decrementPlayerBet((short) 1);
     }
 
     public void largeDecreaseChosenNumber(){
-        getGame().decrementPlayerBet((short) 5);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.decrementPlayerBet((short) 5);
     }
 
     public void largeIncreaseChosenNumber(){
-        getGame().incrementPlayerBet((short) 5);
+        RouletteGame g = getGame();
+        RoulettePlayer p = g.getPlayer();
+        p.incrementPlayerBet((short) 5);
     }
 
 
