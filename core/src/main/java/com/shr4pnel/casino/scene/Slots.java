@@ -5,13 +5,16 @@ import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.slots.SlotsGame;
+import com.shr4pnel.casino.slots.SlotsReal;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
+
 public class Slots extends ManagedButtonGame {
    private SlotsGame game;
    private Table root,fruitContainer;
    private TypingLabel label;
    private AsciiArt asciiArt;
+   private SlotsReal slotsReal;
 
 
     @Override
@@ -32,7 +35,7 @@ public class Slots extends ManagedButtonGame {
         LabelBuilder labelBuilder = new LabelBuilder();
 
         label = labelBuilder
-            .start(asciiArt.getFruit(asciiArt.getRanFruit(),"32"))
+            .start(asciiArt.getFruit(slotsReal.getReal()[0],"32"))
             .build();
         fruitContainer = new Table(StyleManager.getSkin());
         fruitContainer.add(label).center().row();
