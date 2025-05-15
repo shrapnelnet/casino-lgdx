@@ -1,60 +1,47 @@
 package com.shr4pnel.casino.scene;
 
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-
+import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.builders.LabelBuilder;
+import com.shr4pnel.casino.slots.SlotsGame;
 import com.shr4pnel.casino.style.StyleManager;
-import com.shr4pnel.casino.input.ButtonGroupManager;
+import com.shr4pnel.casino.util.AsciiArt;
+public class Slots extends ManagedButtonGame {
+   private SlotsGame game;
+   private Table root,fruitContainer;
+   private TypingLabel label;
+   private AsciiArt asciiArt;
 
-/**
- * Handles the UI for the menu.
- * @author shrapnelnet
- * @since 0.1.0
- * @see ManagedButtonScene
- */
-public class Slots extends ManagedButtonScene {
-    private final LabelBuilder labelBuilder = new LabelBuilder();
-    private TextButton Return;
-    private TypingLabel label;
-    private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
 
-    /**
-     * @return The Intro Scene2D ui, as a table
-     */
+    @Override
+    public Game getGameInstance() {
+        return game;
+    }
+
     @Override
     public Table get() {
-        Table root = new Table(StyleManager.getSkin());
-        Table labelRoot = new Table(StyleManager.getSkin());
+        game = new SlotsGame();
+        root = new Table(StyleManager.getSkin());
+        root.setDebug(true, true);
+        root.setSize(800, 450);
+        root.background("window");
+
+        asciiArt = new AsciiArt();
+
+        LabelBuilder labelBuilder = new LabelBuilder();
 
         label = labelBuilder
-            .start("{WIND}Slots{ENDWIND}")
-            .noDelay()
+            .start(asciiArt.getFruit(asciiArt.getRanFruit(),"32"))
             .build();
+        fruitContainer = new Table(StyleManager.getSkin());
+        fruitContainer.add(label).center().row();
+        root.add(fruitContainer).center().row();
 
-
-        Return = new TextButton("Return", StyleManager.getSkin(), "toggle");
-
-
-        Return.setName("Return");
-
-
-        textButtonGroup.add(Return);
-        textButtonGroup.setMaxCheckCount(1);
-        textButtonGroup.setMinCheckCount(1);
-        buttonGroupManager = new ButtonGroupManager(Return);
-        buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
-
-        labelRoot.add(label).center();
-        root.background("window");
-        root.setSize(800, 450);
-
-        // without colspan, i stretch the play button out to 800 width
-        root.add(labelRoot).colspan(3).center().row();
-        root.add(Return).pad(10);
 
         return root;
+        
+        
     }
+    
 }
