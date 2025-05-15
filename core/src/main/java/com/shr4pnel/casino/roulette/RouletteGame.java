@@ -56,14 +56,55 @@ public class RouletteGame extends Game {
         return null;
     }
 
-    public boolean isRed() {
+    public boolean isEven(int b) {
+        return b % 2 == 0;
+    }
+
+    public boolean isOdd(int b) {
+        return b % 2 == 1;
+    }
+
+    public boolean isRed(int b) {
         int[] reds = rouletteTable.getReds();
-        Iterator<Integer> redsIt = reds.iterator();
-        while (redsIt.hasNext()) {
-            System.out.println(redsIt.next());
-        }
-
-
+        for (int i : reds)
+            if (b == reds[i])
+                return true;
         return false;
     }
+
+    public boolean isBlack(int b) {
+        int[] blacks = rouletteTable.getBlacks();
+        for (int i : blacks)
+            if (b == blacks[i])
+                return true;
+        return false;
+    }
+
+    public boolean isFirst(int b) {
+        int[] first = rouletteTable.getFirst();
+        for (int i : first)
+            if (b == first[i])
+                return true;
+        return false;
+    }
+
+    public boolean isSecond(int b) {
+        int[] second = rouletteTable.getSecond();
+        for (int i : second)
+            if (b == second[i])
+                return true;
+        return false;
+    }
+
+    public boolean isThird(int b) {
+        int[] third = rouletteTable.getSecond();
+        for (int i : third)
+            if (b == third[i])
+                return true;
+        return false;
+    }
+
+
+
+
 }
