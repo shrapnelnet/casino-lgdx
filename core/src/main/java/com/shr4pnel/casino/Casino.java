@@ -51,13 +51,10 @@ public class Casino extends ApplicationAdapter {
     private Menu menu;
     private Navigation navigation;
     private Poker poker;
-    private Slots slots;
-    private Roulette roulette;
     private Lootboxes lootboxes;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
-
-
+    private Slots slots;
 
     @Override
     public void create() {
@@ -232,6 +229,8 @@ public class Casino extends ApplicationAdapter {
         blackjackStage.act(Gdx.graphics.getDeltaTime());
         blackjackStage.draw();
     }
+
+   
 
     private void renderMenu() {
         ScreenUtils.clear(Color.BLACK);
