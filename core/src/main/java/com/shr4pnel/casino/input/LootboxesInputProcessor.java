@@ -5,8 +5,8 @@ import com.shr4pnel.casino.scene.ManagedButtonScene;
 /**
  * stub
  */
-public class RouletteInputProcessor extends InputProcessor {
-    public RouletteInputProcessor(ManagedButtonScene s) {
+public class LootboxesInputProcessor extends InputProcessor {
+    public LootboxesInputProcessor(ManagedButtonScene s) {
         super(s);
     }
 }

@@ -109,6 +109,45 @@ public class ButtonGroupManager {
         return menuButtonGroup.getButtons().get(nextIndex);
     }
 
+    private TextButton getUpwardToggledButton() {
+        int nextIndex;
+        int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0) {
+            return null;
+        }
+
+        int index = getToggledButtonIndex();
+
+        if (index == 0)
+            nextIndex = menuButtonGroupSize - 2;
+        else if (index == 1)
+            nextIndex = menuButtonGroupSize - 1;
+        else
+            nextIndex = index - 2;
+
+        return menuButtonGroup.getButtons().get(nextIndex);
+    }
+
+    private TextButton getDownwardToggledButton() {
+        int nextIndex;
+        int menuButtonGroupSize = menuButtonGroup.getButtons().size;
+
+        if (menuButtonGroupSize == 0)
+            return null;
+
+        int index = getToggledButtonIndex();
+
+        if (index == menuButtonGroupSize - 2)
+        nextIndex = 0;
+        else if (index == menuButtonGroupSize - 1)
+            nextIndex = 1;
+        else
+        nextIndex = index + 2;
+
+        return menuButtonGroup.getButtons().get(nextIndex);
+    }
+
     /**
      * @return The position of the toggled button, in the button group
      */
@@ -142,6 +181,23 @@ public class ButtonGroupManager {
         return true;
     }
 
+
+    public boolean up() {
+        TextButton nextButton = getUpwardToggledButton();
+        if (nextButton == null)
+            return false;
+        setActiveButton(nextButton);
+        return true;
+    }
+
+    public boolean down() {
+        TextButton nextButton = getDownwardToggledButton();
+        if (nextButton == null)
+            return false;
+        setActiveButton(nextButton);
+        return true;
+    }
+
     /**
      * Fired when enter is pressed in a scene that uses a button
      * @return true/false depending on if action goes to default in switch case
@@ -150,8 +206,37 @@ public class ButtonGroupManager {
     public boolean enter() {
         TextButton activeButton = getActiveButton();
         return switch (activeButton.getName()) {
-            case "Play" -> {
+            case "Play", "Return" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.NAVIGATION);
+                yield true;
+            }
+
+            case "Blackjack" -> {
                 SceneManager.setActiveScene(SceneManager.Scene.BLACKJACK);
+                yield true;
+            }
+
+
+            case "Poker" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.POKER);
+                yield true;
+            }
+
+            case "Slots" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.SLOTS);
+                yield true;
+            }
+            case "Roulette" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.ROULETTE);
+                yield true;
+            }
+            case "Lootboxes" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.LOOTBOXES);
+                yield true;
+            }
+
+            case "Back" -> {
+                SceneManager.setActiveScene(SceneManager.Scene.MENU);
                 yield true;
             }
 
@@ -163,6 +248,10 @@ public class ButtonGroupManager {
             case "Settings" -> true;
             default -> false;
         };
+    }
+    public boolean exit(){
+        Gdx.app.exit();
+        return false;
     }
 
 

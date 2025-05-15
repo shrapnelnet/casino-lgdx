@@ -38,19 +38,26 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private Stage introStage, menuStage, blackjackStage, rouletteStage;
+    private Stage introStage, menuStage, blackjackStage, navigationStage,pokerStage, slotStage , rouletteStage, lootboxesStage;
     private Window introRoot;
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot, blackjackRoot, rouletteRoot;
+    private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot, lootboxesRoot ;
     private Blackjack blackjack;
     private Roulette roulette;
     private Menu menu;
+    private Navigation navigation;
+    private Poker poker;
+    private Slots slots;
+    private Roulette roulette;
+    private Lootboxes lootboxes;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
+
+
 
     @Override
     public void create() {
@@ -61,7 +68,11 @@ public class Casino extends ApplicationAdapter {
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
-        rouletteStage = new Stage(viewport);
+        navigationStage = new Stage(viewport);
+        pokerStage= new Stage(viewport);
+        slotStage= new Stage(viewport);
+        rouletteStage= new Stage(viewport);
+        lootboxesStage= new Stage(viewport);
 
         // preload textures
         textureManager = new TextureManager();
@@ -87,15 +98,35 @@ public class Casino extends ApplicationAdapter {
         blackjackRoot = blackjack.get();
         blackjackStage.addActor(blackjackRoot);
 
-        // load roulette scene2d markup
+        navigation = new Navigation();
+        navigationRoot = navigation.get();
+        navigationStage.addActor(navigationRoot);
+
+        poker = new Poker();
+        pokerRoot = poker.get();
+        pokerStage.addActor(pokerRoot);
+
+        slots = new Slots();
+        slotRoot = slots.get();
+        slotStage.addActor(slotRoot);
+
         roulette = new Roulette();
         rouletteRoot = roulette.get();
         rouletteStage.addActor(rouletteRoot);
 
+        lootboxes = new Lootboxes();
+        lootboxesRoot = lootboxes.get();
+        lootboxesStage.addActor(lootboxesRoot);
+
+
         // store scene instances in map for scenemanager accesses and implicit ownership within Casino
         sceneInstanceMap.put(SceneManager.Scene.MENU, menu);
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
+        sceneInstanceMap.put(SceneManager.Scene.NAVIGATION, navigation);
+        sceneInstanceMap.put(SceneManager.Scene.POKER, poker);
+        sceneInstanceMap.put(SceneManager.Scene.SLOTS, slots);
         sceneInstanceMap.put(SceneManager.Scene.ROULETTE, roulette);
+        sceneInstanceMap.put(SceneManager.Scene.LOOTBOXES, lootboxes);
     }
 
     /**
@@ -157,6 +188,11 @@ public class Casino extends ApplicationAdapter {
                 case INTRO -> renderIntro();
                 case BLACKJACK -> renderBlackjack();
                 case MENU -> renderMenu();
+                case NAVIGATION -> renderNavigation();
+                case POKER -> renderPoker();
+                case SLOTS -> renderSlots();
+                case ROULETTE -> renderRoulette();
+                case LOOTBOXES -> renderLootboxes();
             }
         }
     }
@@ -201,6 +237,32 @@ public class Casino extends ApplicationAdapter {
         ScreenUtils.clear(Color.BLACK);
         menuStage.act(Gdx.graphics.getDeltaTime());
         menuStage.draw();
+    }
+
+    private void renderNavigation() {
+        ScreenUtils.clear(Color.BLACK);
+        navigationStage.act(Gdx.graphics.getDeltaTime());
+        navigationStage.draw();
+    }
+    private void renderPoker() {
+        ScreenUtils.clear(Color.BLACK);
+        pokerStage.act(Gdx.graphics.getDeltaTime());
+        pokerStage.draw();
+    }
+    private void renderSlots() {
+        ScreenUtils.clear(Color.BLACK);
+        slotStage.act(Gdx.graphics.getDeltaTime());
+        slotStage.draw();
+    }
+    private void renderRoulette() {
+        ScreenUtils.clear(Color.BLACK);
+        rouletteStage.act(Gdx.graphics.getDeltaTime());
+        rouletteStage.draw();
+    }
+    private void renderLootboxes() {
+        ScreenUtils.clear(Color.BLACK);
+        lootboxesStage.act(Gdx.graphics.getDeltaTime());
+        lootboxesStage.draw();
     }
 
     public static ConsoleManager getActiveConsole() {
