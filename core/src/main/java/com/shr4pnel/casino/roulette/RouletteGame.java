@@ -2,16 +2,16 @@ package com.shr4pnel.casino.roulette;
 
 import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.base.Player;
-import com.shr4pnel.casino.roulette.RouletteTable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 
 public class RouletteGame extends Game {
     private Map<RouletteBetType, Integer> betTypeToMult = new HashMap<>();
+    private Map<RoulettePhase, String> phaseToString = new HashMap<>();
+    private Map<RoulettePhase,RoulettePhase> nextPhaseMap = new HashMap<>();
+
     private boolean containsEven;
     private boolean containsOdd;
     private boolean containsRed;
@@ -22,6 +22,7 @@ public class RouletteGame extends Game {
     public RoulettePlayer player;
     public RouletteTable rouletteTable = new RouletteTable();
 
+
     public RouletteGame() {
         betTypeToMult.put(RouletteBetType.SINGLE, 35);
         betTypeToMult.put(RouletteBetType.EVEN, 1);
@@ -31,6 +32,17 @@ public class RouletteGame extends Game {
         betTypeToMult.put(RouletteBetType.FIRST, 3);
         betTypeToMult.put(RouletteBetType.SECOND, 3);
         betTypeToMult.put(RouletteBetType.THIRD, 3);
+
+        //Roulette phase to string
+        phaseToString.put(RoulettePhase.BET, "Bet");
+        phaseToString.put(RoulettePhase.SPIN, "Spin");
+        phaseToString.put(RoulettePhase.PAYOUT, "Payout");
+
+        //next phase
+        nextPhaseMap.put(RoulettePhase.BET, RoulettePhase.SPIN);
+        nextPhaseMap.put(RoulettePhase.SPIN, RoulettePhase.PAYOUT);
+        nextPhaseMap.put(RoulettePhase.PAYOUT, RoulettePhase.BET);
+
     }
 
 
@@ -44,6 +56,12 @@ public class RouletteGame extends Game {
         SECOND,
         THIRD,
         NULL
+    }
+
+    public enum RoulettePhase {
+        BET,
+        SPIN,
+        PAYOUT
     }
 
     @Override
