@@ -110,17 +110,6 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     /**
-     * Create a new text button
-     * @param content The content of the button
-     * @return A correctly built text button
-     */
-    private TextButton newTextButton(String content) {
-        TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
-        t.setName(content);
-        return t;
-    }
-
-    /**
      * Get the game instance for accessing the state and logic of the game from outside of the stage
      * @return The current game instance
      */
