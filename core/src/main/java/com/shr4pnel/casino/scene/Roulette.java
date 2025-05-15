@@ -87,11 +87,4 @@ public class Roulette extends ManagedButtonGame {
     public void updateChipDisplay() {
         chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
     }
-
-    private TextButton newTextButton(String content) {
-        TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
-        t.setName(content);
-        return t;
-    }
-
 }
