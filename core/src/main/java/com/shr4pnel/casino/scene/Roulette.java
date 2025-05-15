@@ -19,7 +19,6 @@ public class Roulette extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
     private TextButton bet, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, restart, odds, evens, reds, blacks, first, second, third, increaseChosenNumber, decreaseChosenNumber, largeDecreaseChosenNumber, largeIncreaseChosenNumber; //buttons
     private Label chipCount, chosenNumber;
-    //private TypingLabel phase;
     private Table root, playerButtonRoot, chipTable, status;
     private TextureManager textureManager;
     private RouletteGame game;
@@ -86,12 +85,6 @@ public class Roulette extends ManagedButtonGame {
 
     public void updateChipDisplay() {
         chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
-    }
-
-    private TextButton newTextButton(String content) {
-        TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
-        t.setName(content);
-        return t;
     }
 
 }
