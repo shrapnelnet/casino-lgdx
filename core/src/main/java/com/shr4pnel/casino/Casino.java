@@ -52,7 +52,6 @@ public class Casino extends ApplicationAdapter {
     private Navigation navigation;
     private Poker poker;
     private Slots slots;
-    private Roulette roulette;
     private Lootboxes lootboxes;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
