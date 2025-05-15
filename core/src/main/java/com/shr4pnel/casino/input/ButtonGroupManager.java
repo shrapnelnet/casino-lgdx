@@ -23,9 +23,16 @@ public class ButtonGroupManager {
     private final ButtonGroup<TextButton> menuButtonGroup = new ButtonGroup<>();
     private TextButton activeButton;
     private ButtonGroupListener listener;
+    protected final Map<String, Long> incrementStringToLong = new HashMap<>();
 
     public ButtonGroupManager(TextButton... t) {
         setMenuButtonGroup(t);
+        incrementStringToLong.put("---", -100L);
+        incrementStringToLong.put("--", -10L);
+        incrementStringToLong.put("-", -1L);
+        incrementStringToLong.put("+", 1L);
+        incrementStringToLong.put("++", 10L);
+        incrementStringToLong.put("+++", 100L);
     }
 
     /**
