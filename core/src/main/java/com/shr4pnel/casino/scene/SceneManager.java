@@ -11,7 +11,6 @@ import com.shr4pnel.casino.input.SlotsInputProcessor;
 import com.shr4pnel.casino.input.RouletteInputProcessor;
 import com.shr4pnel.casino.input.LootboxesInputProcessor;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,7 +114,7 @@ public class SceneManager {
 
                 ManagedButtonScene rouletteInstance = Casino
                     .getInstance()
-                    .getSceneInstance(Scene.ROULETTE);
+                    .getGameInstance(Scene.ROULETTE);
 
                 Gdx.input.setInputProcessor(new RouletteInputProcessor(rouletteInstance));
                 Casino.getActiveConsole().reset();
@@ -160,6 +159,5 @@ public class SceneManager {
         SLOTS,
         ROULETTE,
         LOOTBOXES
-
     }
 }

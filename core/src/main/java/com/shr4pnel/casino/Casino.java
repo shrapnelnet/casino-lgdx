@@ -47,6 +47,7 @@ public class Casino extends ApplicationAdapter {
     private boolean hasIntroLoadSoundPlayed = false;
     private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot, lootboxesRoot ;
     private Blackjack blackjack;
+    private Roulette roulette;
     private Menu menu;
     private Navigation navigation;
     private Poker poker;
