@@ -24,10 +24,9 @@ import static com.shr4pnel.casino.blackjack.BlackjackGame.BlackjackPhase.WIN;
  */
 public class Blackjack extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
-    private TextButton hit, stand, split, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet, restart;
+    private TextButton hit, stand, doubleDown, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, bet, restart;
     private Label chipCount;
     private TypingLabel phase;
-    private Image cardPlain;
     private Table root, playerHandRoot, aiHandRoot, playerButtonRoot, chipTable, status;
     private TextureManager textureManager;
     private BlackjackGame game;
@@ -58,11 +57,9 @@ public class Blackjack extends ManagedButtonGame {
         root.background("window");
 
         textureManager = Casino.getInstance().getTextureManagerInstance();
-        cardPlain = textureManager.getImage("card/card.jpg");
 
         hit = newTextButton("Hit");
         stand = newTextButton("Stand");
-        split = newTextButton("Split");
         doubleDown = newTextButton("Double Down");
         increaseBet = newTextButton("+");
         decreaseBet = newTextButton("-");
@@ -157,7 +154,7 @@ public class Blackjack extends ManagedButtonGame {
     private void bet() {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
         chipTable.clear();
-        chipCount = new Label("Bet: 0/" + game.getPlayer().getChips(), StyleManager.getSkin());
+        chipCount = labelBuilder.start("Bet: 0/" + game.getPlayer().getChips()).build();
         chipTable.add(chipCount).width(190);
         playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
     }
