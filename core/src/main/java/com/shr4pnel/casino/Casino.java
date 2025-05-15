@@ -229,9 +229,7 @@ public class Casino extends ApplicationAdapter {
         blackjackStage.act(Gdx.graphics.getDeltaTime());
         blackjackStage.draw();
     }
-
    
-
     private void renderMenu() {
         ScreenUtils.clear(Color.BLACK);
         menuStage.act(Gdx.graphics.getDeltaTime());
