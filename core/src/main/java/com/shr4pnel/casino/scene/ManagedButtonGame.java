@@ -8,7 +8,13 @@ import com.shr4pnel.casino.base.Game;
  * @version 0.1.0
  * @see ManagedButtonScene
  */
-public abstract class ManagedButtonGame extends ManagedButtonScene {
+public abstract class
+
+
+
+
+
+ManagedButtonGame extends ManagedButtonScene {
     /**
      * @return The current game instance
      */
