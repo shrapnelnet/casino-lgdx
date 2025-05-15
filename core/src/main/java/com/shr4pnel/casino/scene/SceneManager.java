@@ -23,13 +23,16 @@ public class SceneManager {
         sceneToPrettyName.put(Scene.BLACKJACK, "Blackjack");
         sceneToPrettyName.put(Scene.POKER, "Poker");
         sceneToPrettyName.put(Scene.MENU, "Menu");
+        sceneToPrettyName.put(Scene.SLOTS, "Slots");
+
 
         prettyNameToScene = new HashMap<>();
         prettyNameToScene.put("intro", Scene.INTRO);
         prettyNameToScene.put("blackjack", Scene.BLACKJACK);
         prettyNameToScene.put("poker", Scene.POKER);
         prettyNameToScene.put("menu", Scene.MENU);
-        setActiveScene(Scene.BLACKJACK);
+        prettyNameToScene.put("slots", Scene.SLOTS);
+        setActiveScene(Scene.SLOTS);
     }
 
     /**
@@ -66,6 +69,16 @@ public class SceneManager {
                 Gdx.input.setInputProcessor(new BlackjackInputProcessor(blackjackInstance));
                 Casino.getActiveConsole().reset();
             }
+            case SLOTS -> {
+                SoundEffectHelper.stopAll();
+
+                ManagedButtonScene slotsInstance = Casino
+                    .getInstance()
+                    .getGameInstance(Scene.SLOTS);
+
+                // Gdx.input.setInputProcessor(new BlackjackInputProcessor(slotsInstance));
+                Casino.getActiveConsole().reset();
+            }
         }
         SceneManager.activeScene = activeScene;
     }
@@ -91,6 +104,7 @@ public class SceneManager {
         INTRO,
         BLACKJACK,
         POKER,
-        MENU
+        MENU,
+        SLOTS
     }
 }
