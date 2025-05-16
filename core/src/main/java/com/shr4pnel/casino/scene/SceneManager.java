@@ -42,7 +42,7 @@ public class SceneManager {
         prettyNameToScene.put("slots", Scene.SLOTS);
         prettyNameToScene.put("roulette", Scene.ROULETTE);
         prettyNameToScene.put("lootboxes", Scene.LOOTBOXES);
-        setActiveScene(Scene.MENU);
+        setActiveScene(Scene.SLOTS);
     }
 
     /**
@@ -108,6 +108,7 @@ public class SceneManager {
 
                 Gdx.input.setInputProcessor(new SlotsInputProcessor(slotsInstance));
                 Casino.getActiveConsole().reset();
+
             }
             case ROULETTE -> {
                 SoundEffectHelper.stopAll();

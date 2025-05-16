@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import com.crashinvaders.vfx.VfxManager;
@@ -24,6 +26,7 @@ import com.shr4pnel.casino.util.TextureManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimerTask;
 
 // if you're lost, what you're looking for is probably in here ;)
 
@@ -61,7 +64,8 @@ public class Casino extends ApplicationAdapter {
         batch = new SpriteBatch();
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
-
+        
+     
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
@@ -106,6 +110,9 @@ public class Casino extends ApplicationAdapter {
         slots = new Slots();
         slotRoot = slots.get();
         slotStage.addActor(slotRoot);
+        
+       
+    
 
         roulette = new Roulette();
         rouletteRoot = roulette.get();
