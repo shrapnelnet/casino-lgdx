@@ -5,14 +5,14 @@ import com.shr4pnel.casino.base.Player;
 import com.shr4pnel.casino.roulette.RouletteGame;
 import com.shr4pnel.casino.roulette.RouletteWheel;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class RouletteGame extends Game {
     private Map<RouletteBetType, Integer> betTypeToMult = new HashMap<>();
     private Map<RoulettePhase, String> phaseToString = new HashMap<>();
     private Map<RoulettePhase,RoulettePhase> nextPhaseMap = new HashMap<>();
+    private Map<RouletteBetType, List<Integer>> betTypeMembers = new HashMap<>();
     private RoulettePhase phase = RoulettePhase.BET;
 
     private boolean containsEven;
@@ -22,9 +22,16 @@ public class RouletteGame extends Game {
     private boolean containsFirst;
     private boolean containsSecond;
     private boolean containsThird;
+
+    public int getMult() {
+        return mult;
+    }
+
+    private int mult;
     public RoulettePlayer player;
     public RouletteTable rouletteTable = new RouletteTable();
     public RouletteWheel rouletteWheel = new RouletteWheel();
+
 
 
     public RouletteGame() {
@@ -46,6 +53,12 @@ public class RouletteGame extends Game {
         nextPhaseMap.put(RoulettePhase.BET, RoulettePhase.SPIN);
         nextPhaseMap.put(RoulettePhase.SPIN, RoulettePhase.PAYOUT);
         nextPhaseMap.put(RoulettePhase.PAYOUT, RoulettePhase.BET);
+
+        betTypeMembers.put(RouletteBetType.RED, Arrays.asList(1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36));
+        betTypeMembers.put(RouletteBetType.BLACK, Arrays.asList(2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35));
+        betTypeMembers.put(RouletteBetType.FIRST, Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12));
+        betTypeMembers.put(RouletteBetType.SECOND, Arrays.asList(13,14,15,16,17,18,19,20,21,22,23,24));
+        betTypeMembers.put(RouletteBetType.THIRD, Arrays.asList(25,26,27,28,29,30,31,32,33,34,35,36));
 
         player = new RoulettePlayer(true);
     }
@@ -143,10 +156,47 @@ public class RouletteGame extends Game {
         return false;
     }
 
-public int spinResult(){
-        return rouletteWheel.spin();
-}
+    public float betTypeToMult(int chosenNumber, int spinResult){
+        mult = 0;
+        if (betTypeMembers.get(RouletteBetType.RED).contains(chosenNumber)){
+            mult++;
+        }
 
+        if (betTypeMembers.get(RouletteBetType.BLACK).contains(chosenNumber)){
+            mult++;
+        }
 
+        if (betTypeMembers.get(RouletteBetType.EVEN).contains(chosenNumber)){
+            mult += 2;
+        }
+
+        if (betTypeMembers.get(RouletteBetType.ODD).contains(chosenNumber)){
+            mult += 2;
+        }
+
+        if (betTypeMembers.get(RouletteBetType.FIRST).contains(chosenNumber)){
+            mult += 3;
+        }
+
+        if (betTypeMembers.get(RouletteBetType.SECOND).contains(chosenNumber)){
+            mult += 3;
+        }
+
+        if (betTypeMembers.get(RouletteBetType.THIRD).contains(chosenNumber)){
+            mult += 3;
+        }
+
+        if (spinResult == chosenNumber){
+            mult += 35;
+        }
+
+        return mult + 1;
+    }
+
+    //public int Spin(){
+    //    int spinResult = rouletteWheel.spin();
+    //    if(spinResult == )
+//
+    //}
 
 }

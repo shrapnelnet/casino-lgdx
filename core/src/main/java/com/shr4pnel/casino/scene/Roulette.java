@@ -79,8 +79,8 @@ public class Roulette extends ManagedButtonGame {
 
     private void bet() {
         betTable.setSize(800, 450);
-        betTable.add(largeDecreaseChosenNumber,decreaseChosenNumber).setFillParent(true);
-        betTable.add(increaseChosenNumber,largeIncreaseChosenNumber).setWidth(200);
+        betTable.add(largeDecreaseChosenNumber,decreaseChosenNumber);
+        betTable.add(increaseChosenNumber,largeIncreaseChosenNumber).right();
         betTable.row();
         betTable.add(evens,odds);
         betTable.row();
