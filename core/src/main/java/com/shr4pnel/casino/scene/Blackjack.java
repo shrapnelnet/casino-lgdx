@@ -113,9 +113,7 @@ public class Blackjack extends ManagedButtonGame {
      * Update the chip counter shown during the BET phase
      */
     public void updateChipDisplay() {
-        Casino c = Casino.getInstance();
-        GlobalPlayerState state = c.getPlayerState();
-        Long chips = state.getChips();
+        Long chips = GlobalPlayerState.getChips();
         if (chips == null)
             chips = game.getPlayer().getChips();
         chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + chips);
@@ -137,16 +135,13 @@ public class Blackjack extends ManagedButtonGame {
     private void bust() {
         setAllButtons(restart);
         BlackjackPlayer p = game.getPlayer();
-        GlobalPlayerState state = Casino.getInstance().getPlayerState();
-        state.setChips(p.getChips() - p.getBet());
+        GlobalPlayerState.setChips(p.getChips() - p.getBet());
     }
 
     private void bet() {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
         chipTable.clear();
-        Casino c = Casino.getInstance();
-        GlobalPlayerState state = c.getPlayerState();
-        Long chips = state.getChips();
+        Long chips = GlobalPlayerState.getChips();
         if (chips == null)
             chips = game.getPlayer().getChips();
         else
@@ -266,17 +261,15 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     public void showWinner(BlackjackPlayer p) {
-        Casino c = Casino.getInstance();
-        GlobalPlayerState state = c.getPlayerState();
         Long bet = getGameInstance().getPlayer().getBet();
         Long chips = getGameInstance().getPlayer().getChips();
         if (p.equals(game.getPlayer())) {
             game.setPhase(BlackjackGame.BlackjackPhase.WIN);
-            state.setChips(chips + bet);
+            GlobalPlayerState.setChips(chips + bet);
             return;
         }
 
-        state.setChips(chips - bet);
+        GlobalPlayerState.setChips(chips - bet);
         game.setPhase(BlackjackGame.BlackjackPhase.LOSE);
     }
 

@@ -1,17 +1,16 @@
 package com.shr4pnel.casino.util;
 
 public class GlobalPlayerState {
-    private Long chips;
+    private static Long chips;
 
-    public Long getChips() {
+    public static Long getChips() {
+        if (chips == null)
+            return 100L;
+
         return chips;
     }
 
-    public void incrementChips(Long amount) {
-        chips += amount;
-    }
-
-    public void setChips(Long chips) {
-        this.chips = chips;
+    public static void setChips(Long chips) {
+        GlobalPlayerState.chips = chips;
     }
 }
