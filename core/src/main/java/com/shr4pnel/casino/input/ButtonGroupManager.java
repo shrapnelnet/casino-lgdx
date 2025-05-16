@@ -230,10 +230,6 @@ public class ButtonGroupManager {
                 SceneManager.setActiveScene(SceneManager.Scene.ROULETTE);
                 yield true;
             }
-            case "Lootboxes" -> {
-                SceneManager.setActiveScene(SceneManager.Scene.LOOTBOXES);
-                yield true;
-            }
 
             case "Back" -> {
                 SceneManager.setActiveScene(SceneManager.Scene.MENU);

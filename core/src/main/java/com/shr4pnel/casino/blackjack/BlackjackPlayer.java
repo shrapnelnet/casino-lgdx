@@ -29,11 +29,14 @@ public class BlackjackPlayer extends Player {
 
         // aces are high or low. high used by default unless it would bust
         for (int i = 0; i < aces.size(); ++i) {
-            if ((handValue + 11) > 21) {
-                handValue += 1;
-            } else {
-                handValue += 11;
-            }
+            handValue++;
+            // temp fix: just add one :(
+//            if ((handValue + 11) > 21) {
+//
+//                handValue += 1;
+//            } else {
+//                handValue += 11;
+//            }
         }
         return handValue;
     }

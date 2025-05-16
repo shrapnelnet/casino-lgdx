@@ -109,7 +109,7 @@ public class BlackjackGame extends Game {
     }
 
     public BlackjackPlayer getWinner() {
-        if (player.getHandValue() > ai.getHandValue())
+        if (player.getHandValue() > ai.getHandValue() || ai.isBust())
             return player;
 
         return ai;

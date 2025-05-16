@@ -13,13 +13,14 @@ import com.shr4pnel.casino.roulette.RoulettePlayer;
 import com.shr4pnel.casino.builders.LabelBuilder;
 import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.style.StyleManager;
+import com.shr4pnel.casino.util.GlobalPlayerState;
 import com.shr4pnel.casino.util.TextureManager;
 
 public class Roulette extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
     private TextButton bet, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, restart, odds, evens, reds, blacks, first, second, third, increaseChosenNumber, decreaseChosenNumber, largeDecreaseChosenNumber, largeIncreaseChosenNumber; //buttons
     private Label chipCount, chosenNumber, spinText;
-    private Table root, chipTable, betTable;
+    private Table root, chipTable, betTable, playerButtonRoot;
     private TextureManager textureManager;
     private RouletteGame game;
     private LabelBuilder labelBuilder = new LabelBuilder();
@@ -32,6 +33,7 @@ public class Roulette extends ManagedButtonGame {
     @Override
     public Table get() {
         root = new Table(StyleManager.getSkin());
+        playerButtonRoot = new Table(StyleManager.getSkin());
         chipTable = new Table(StyleManager.getSkin());
         betTable = new Table(StyleManager.getSkin());
         game = new RouletteGame();
@@ -65,7 +67,7 @@ public class Roulette extends ManagedButtonGame {
     }
 
     public void updateChipDisplay() {
-        chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
+        chipCount.setText("Bet: " + GlobalPlayerState.getChips() + "/" + game.getPlayer().getChips());
     }
 
     private void setPlayerButtonPaneByPhase(){
@@ -78,16 +80,10 @@ public class Roulette extends ManagedButtonGame {
     }
 
     private void bet() {
-        betTable.setSize(800, 450);
-        betTable.add(largeDecreaseChosenNumber,decreaseChosenNumber);
-        betTable.add(increaseChosenNumber,largeIncreaseChosenNumber).right();
-        betTable.row();
-        betTable.add(evens,odds);
-        betTable.row();
-        betTable.add(reds,blacks);
-        betTable.row();
-        betTable.add(first,second,third);
-        root.add(betTable);
+        betTable.add(new Table(StyleManager.getSkin()));
+        betTable.add(largeDecreaseChosenNumber,decreaseChosenNumber,increaseChosenNumber,largeIncreaseChosenNumber).row();
+        betTable.add(evens,odds,reds,blacks,first,second,third).row();
+        root.add(betTable.bottom());
     }
 
     private void spin() {

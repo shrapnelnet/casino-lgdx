@@ -152,7 +152,7 @@ public class TypingAdapterBuilder {
                         for (Label l : asciiArt.artAsTypingLabelArray()) {
                             try {
                                 root.add(l).row();
-                                Thread.sleep(delayMillis);
+                                Thread.sleep(100);
                             } catch (InterruptedException e) {
                                 Gdx.app.log("TypingAdapterBuilder", "Interrupted while waiting on thread in event()", e);
                             }

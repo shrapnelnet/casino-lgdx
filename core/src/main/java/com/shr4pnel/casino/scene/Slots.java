@@ -65,7 +65,6 @@ public class Slots extends ManagedButtonGame {
                 .build();
 
             bottomReal = labelBuilder
-
                 .start(asciiArt.getFruit(game.getReals().get(2)[i], "32"))
                 .build();
 
@@ -89,17 +88,7 @@ public class Slots extends ManagedButtonGame {
             fruitContainer.add(middleReal).center().row();
             fruitContainer.add(bottomReal).center().row();
 
-
-
             root.add(fruitContainer);
-
-
-
-
-
-
-
-
         }
         return root;
     }

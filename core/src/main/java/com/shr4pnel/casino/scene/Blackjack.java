@@ -12,6 +12,7 @@ import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.input.BlackjackButtonManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
+import com.shr4pnel.casino.util.GlobalPlayerState;
 import com.shr4pnel.casino.util.TextureManager;
 
 /**
@@ -50,7 +51,7 @@ public class Blackjack extends ManagedButtonGame {
 
         status.add(phase).row();
 
-        root.setDebug(true, true);
+        root.setDebug(false, true);
         root.setSize(800, 450);
         root.background("window");
 
@@ -112,7 +113,10 @@ public class Blackjack extends ManagedButtonGame {
      * Update the chip counter shown during the BET phase
      */
     public void updateChipDisplay() {
-        chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
+        Long chips = GlobalPlayerState.getChips();
+        if (chips == null)
+            chips = game.getPlayer().getChips();
+        chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + chips);
     }
 
     /**
@@ -123,7 +127,7 @@ public class Blackjack extends ManagedButtonGame {
         switch (game.getPhase()) {
             case BET -> bet();
             case DEAL -> deal();
-            case PLAYER_TURN -> setAllButtons(hit, stand, doubleDown);
+            case PLAYER_TURN -> setAllButtons(hit, stand);
             case BUST -> bust();
         }
     }
@@ -131,13 +135,19 @@ public class Blackjack extends ManagedButtonGame {
     private void bust() {
         setAllButtons(restart);
         BlackjackPlayer p = game.getPlayer();
-        p.incrementChips(-p.getBet());
+        GlobalPlayerState.setChips(p.getChips() - p.getBet());
     }
 
     private void bet() {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
         chipTable.clear();
-        chipCount = labelBuilder.start("Bet: 0/" + game.getPlayer().getChips()).build();
+        Long chips = GlobalPlayerState.getChips();
+        if (chips == null)
+            chips = game.getPlayer().getChips();
+        else
+            game.getPlayer().setChips(chips);
+
+        chipCount = labelBuilder.start("Bet: 0/" + chips).build();
         chipTable.add(chipCount).width(190);
         playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
     }
@@ -251,10 +261,15 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     public void showWinner(BlackjackPlayer p) {
+        Long bet = getGameInstance().getPlayer().getBet();
+        Long chips = getGameInstance().getPlayer().getChips();
         if (p.equals(game.getPlayer())) {
             game.setPhase(BlackjackGame.BlackjackPhase.WIN);
+            GlobalPlayerState.setChips(chips + bet);
             return;
         }
+
+        GlobalPlayerState.setChips(chips - bet);
         game.setPhase(BlackjackGame.BlackjackPhase.LOSE);
     }
 
@@ -271,5 +286,6 @@ public class Blackjack extends ManagedButtonGame {
         BlackjackPlayer winner = game.getWinner();
         showWinner(winner);
         updatePhase();
+        setAllButtons(restart);
     }
 }

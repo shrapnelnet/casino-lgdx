@@ -10,13 +10,14 @@ import com.shr4pnel.casino.style.StyleManager;
 
 /**
  * Handles the UI for the menu.
+ *
  * @author shrapnelnet
- * @since 0.1.0
  * @see ManagedButtonScene
+ * @since 0.1.0
  */
 public class Navigation extends ManagedButtonScene {
     private final LabelBuilder labelBuilder = new LabelBuilder();
-    private TextButton Blackjack, Poker, Slots, Roulette, Lootboxes, Back;
+    private TextButton Blackjack, Poker, Slots, Roulette, Back;
     private TypingLabel label;
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
 
@@ -37,20 +38,18 @@ public class Navigation extends ManagedButtonScene {
         Poker = new TextButton("Poker", StyleManager.getSkin(), "toggle");
         Roulette = new TextButton("Roulette", StyleManager.getSkin(), "toggle");
         Slots = new TextButton("Slots", StyleManager.getSkin(), "toggle");
-        Lootboxes = new TextButton("Lootboxes", StyleManager.getSkin(), "toggle");
         Back = new TextButton("Back", StyleManager.getSkin(), "toggle");
 
         Blackjack.setName("Blackjack");
         Poker.setName("Poker");
         Slots.setName("Slots");
         Roulette.setName("Roulette");
-        Lootboxes.setName("Lootboxes");
         Back.setName("Back");
 
-        textButtonGroup.add(Blackjack, Poker,Roulette,Slots,Lootboxes,Back);
+        textButtonGroup.add(Blackjack, Poker, Roulette, Slots, Back);
         textButtonGroup.setMaxCheckCount(1);
         textButtonGroup.setMinCheckCount(1);
-        buttonGroupManager = new ButtonGroupManager(Blackjack, Poker,Roulette,Slots,Lootboxes ,Back);
+        buttonGroupManager = new ButtonGroupManager(Blackjack, Poker, Roulette, Slots, Back);
         buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
 
         labelRoot.add(label).center();
@@ -63,7 +62,6 @@ public class Navigation extends ManagedButtonScene {
         root.add(Poker).pad(10).row();
         root.add(Roulette).pad(10);
         root.add(Slots).pad(10).row();
-        root.add(Lootboxes).pad(10);
         root.add(Back).pad(10).row();
 
         return root;
