@@ -129,7 +129,7 @@ public class Blackjack extends ManagedButtonGame {
         switch (game.getPhase()) {
             case BET -> bet();
             case DEAL -> deal();
-            case PLAYER_TURN -> setAllButtons(hit, stand, doubleDown);
+            case PLAYER_TURN -> setAllButtons(hit, stand);
             case BUST -> bust();
         }
     }
@@ -137,7 +137,8 @@ public class Blackjack extends ManagedButtonGame {
     private void bust() {
         setAllButtons(restart);
         BlackjackPlayer p = game.getPlayer();
-        p.incrementChips(-p.getBet());
+        GlobalPlayerState state = Casino.getInstance().getPlayerState();
+        state.setChips(p.getChips() - p.getBet());
     }
 
     private void bet() {
