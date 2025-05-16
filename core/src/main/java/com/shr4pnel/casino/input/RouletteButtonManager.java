@@ -78,25 +78,42 @@ public class RouletteButtonManager extends ButtonGroupManager {
     public void increaseChosenNumber(){
         RouletteGame g = getGame();
         RoulettePlayer p = g.getPlayer();
-        p.incrementPlayerBet((short) 1);
+        p.incrementRouletteNumber((short) 1);
     }
 
     public void decreaseChosenNumber(){
         RouletteGame g = getGame();
         RoulettePlayer p = g.getPlayer();
-        p.decrementPlayerBet((short) 1);
+        p.decrementRouletteNumber((short) 1);
     }
 
     public void largeDecreaseChosenNumber(){
         RouletteGame g = getGame();
         RoulettePlayer p = g.getPlayer();
-        p.decrementPlayerBet((short) 5);
+        p.decrementRouletteNumber((short) 5);
     }
 
     public void largeIncreaseChosenNumber(){
         RouletteGame g = getGame();
         RoulettePlayer p = g.getPlayer();
-        p.incrementPlayerBet((short) 5);
+        p.incrementRouletteNumber((short) 5);
+    }
+
+    @Override
+    public boolean enter() {
+        /*
+        I prevent enter from being pressed on a button that is no longer visible (Bet)
+        if i am not here i can skip the dealing phase and cause all sorts of nasty NPEs...
+         */
+        boolean handled = super.enter();
+        if (handled)
+            return true;
+
+        TextButton active = getActiveButton();
+        return switch (active.getName()) {
+            case "---", "--", "-", "+", "++", "+++" -> incrementBet(active.getName());
+            default -> false;
+        };
     }
 
 
