@@ -1,9 +1,11 @@
 package com.shr4pnel.casino.roulette;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class RouletteWheel {
 
     public int spin() {
-        return (int)(Math.random() * 35) + 1;
+        return ThreadLocalRandom.current().nextInt(1,37);
     }
 
 

@@ -18,9 +18,8 @@ import com.shr4pnel.casino.util.TextureManager;
 public class Roulette extends ManagedButtonGame {
     private ButtonGroup<TextButton> textButtonGroup = new ButtonGroup<>();
     private TextButton bet, increaseBet, decreaseBet, mediumIncreaseBet, mediumDecreaseBet, largeIncreaseBet, largeDecreaseBet, restart, odds, evens, reds, blacks, first, second, third, increaseChosenNumber, decreaseChosenNumber, largeDecreaseChosenNumber, largeIncreaseChosenNumber; //buttons
-    private Label chipCount, chosenNumber;
-    //private TypingLabel phase;
-    private Table root, playerButtonRoot, chipTable, status;
+    private Label chipCount, chosenNumber, spinText;
+    private Table root, chipTable, betTable;
     private TextureManager textureManager;
     private RouletteGame game;
     private LabelBuilder labelBuilder = new LabelBuilder();
@@ -33,8 +32,8 @@ public class Roulette extends ManagedButtonGame {
     @Override
     public Table get() {
         root = new Table(StyleManager.getSkin());
-        playerButtonRoot = new Table(StyleManager.getSkin());
         chipTable = new Table(StyleManager.getSkin());
+        betTable = new Table(StyleManager.getSkin());
         game = new RouletteGame();
 
         root.setDebug(true, true);
@@ -61,37 +60,42 @@ public class Roulette extends ManagedButtonGame {
         largeIncreaseChosenNumber = newTextButton("+");
         largeDecreaseChosenNumber = newTextButton("-");
 
+        setPlayerButtonPaneByPhase();
         return root;
-    }
-
-    private void setAllButtons(TextButton... t) {
-        playerButtonRoot.clear();
-
-        if (t == null)
-            return;
-
-        playerButtonRoot.add().expandX();
-        playerButtonRoot.add(t).right();
-
-        textButtonGroup.clear();
-        textButtonGroup.add(t);
-
-        if (buttonGroupManager == null) {
-            buttonGroupManager = new RouletteButtonManager(t);
-            buttonGroupManager.setListener(activeButton -> textButtonGroup.setChecked(activeButton.getName()));
-        } else {
-            buttonGroupManager.setMenuButtonGroup(t);
-        }
     }
 
     public void updateChipDisplay() {
         chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
     }
 
-    private TextButton newTextButton(String content) {
-        TextButton t = new TextButton(content, StyleManager.getSkin(), "toggle");
-        t.setName(content);
-        return t;
+    private void setPlayerButtonPaneByPhase(){
+        switch (game.getPhase()) {
+            case BET -> bet();
+            case SPIN -> spin();
+            case PAYOUT -> payout();
+
+        }
+    }
+
+    private void bet() {
+        betTable.setSize(800, 450);
+        betTable.add(largeDecreaseChosenNumber,decreaseChosenNumber);
+        betTable.add(increaseChosenNumber,largeIncreaseChosenNumber).right();
+        betTable.row();
+        betTable.add(evens,odds);
+        betTable.row();
+        betTable.add(reds,blacks);
+        betTable.row();
+        betTable.add(first,second,third);
+        root.add(betTable);
+    }
+
+    private void spin() {
+
+    }
+
+    private void payout() {
+
     }
 
 }
