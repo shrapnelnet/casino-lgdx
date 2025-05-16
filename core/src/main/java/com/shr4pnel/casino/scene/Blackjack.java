@@ -12,6 +12,7 @@ import com.shr4pnel.casino.builders.TypingAdapterBuilder;
 import com.shr4pnel.casino.input.BlackjackButtonManager;
 import com.shr4pnel.casino.style.StyleManager;
 import com.shr4pnel.casino.util.AsciiArt;
+import com.shr4pnel.casino.util.GlobalPlayerState;
 import com.shr4pnel.casino.util.TextureManager;
 
 /**
@@ -112,7 +113,12 @@ public class Blackjack extends ManagedButtonGame {
      * Update the chip counter shown during the BET phase
      */
     public void updateChipDisplay() {
-        chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + game.getPlayer().getChips());
+        Casino c = Casino.getInstance();
+        GlobalPlayerState state = c.getPlayerState();
+        Long chips = state.getChips();
+        if (chips == null)
+            chips = game.getPlayer().getChips();
+        chipCount.setText("Bet: " + game.getPlayer().getBet() + "/" + chips);
     }
 
     /**
@@ -137,7 +143,15 @@ public class Blackjack extends ManagedButtonGame {
     private void bet() {
         setAllButtons(largeDecreaseBet, mediumDecreaseBet, decreaseBet, increaseBet, mediumIncreaseBet, largeIncreaseBet, bet);
         chipTable.clear();
-        chipCount = labelBuilder.start("Bet: 0/" + game.getPlayer().getChips()).build();
+        Casino c = Casino.getInstance();
+        GlobalPlayerState state = c.getPlayerState();
+        Long chips = state.getChips();
+        if (chips == null)
+            chips = game.getPlayer().getChips();
+        else
+            game.getPlayer().setChips(chips);
+
+        chipCount = labelBuilder.start("Bet: 0/" + chips).build();
         chipTable.add(chipCount).width(190);
         playerButtonRoot.add(chipTable).right().expand().pad(0, 150, 0, 0).row();
     }
@@ -251,10 +265,17 @@ public class Blackjack extends ManagedButtonGame {
     }
 
     public void showWinner(BlackjackPlayer p) {
+        Casino c = Casino.getInstance();
+        GlobalPlayerState state = c.getPlayerState();
+        Long bet = getGameInstance().getPlayer().getBet();
+        Long chips = getGameInstance().getPlayer().getChips();
         if (p.equals(game.getPlayer())) {
             game.setPhase(BlackjackGame.BlackjackPhase.WIN);
+            state.setChips(chips + bet);
             return;
         }
+
+        state.setChips(chips - bet);
         game.setPhase(BlackjackGame.BlackjackPhase.LOSE);
     }
 

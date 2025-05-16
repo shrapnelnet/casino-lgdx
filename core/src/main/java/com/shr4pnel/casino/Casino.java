@@ -19,6 +19,7 @@ import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.*;
 import com.shr4pnel.casino.style.StyleManager;
+import com.shr4pnel.casino.util.GlobalPlayerState;
 import com.shr4pnel.casino.util.TextureManager;
 
 import java.util.HashMap;
@@ -38,30 +39,29 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private Stage introStage, menuStage, blackjackStage, navigationStage, pokerStage, slotStage, rouletteStage, lootboxesStage;
+    private Stage introStage, menuStage, blackjackStage, navigationStage, pokerStage, slotStage, rouletteStage;
     private Window introRoot;
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot, lootboxesRoot;
+    private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot;
     private Blackjack blackjack;
     private Roulette roulette;
     private Menu menu;
     private Navigation navigation;
     private Poker poker;
-    private Lootboxes lootboxes;
     private final Map<SceneManager.Scene, ManagedButtonScene> sceneInstanceMap = new HashMap<>();
     private TextureManager textureManager;
     private Slots slots;
+    private GlobalPlayerState playerState;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
-
 
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
@@ -70,7 +70,8 @@ public class Casino extends ApplicationAdapter {
         pokerStage = new Stage(viewport);
         slotStage = new Stage(viewport);
         rouletteStage = new Stage(viewport);
-        lootboxesStage = new Stage(viewport);
+
+        playerState = new GlobalPlayerState();
 
         // preload textures
         textureManager = new TextureManager();
@@ -112,11 +113,6 @@ public class Casino extends ApplicationAdapter {
         rouletteRoot = roulette.get();
         rouletteStage.addActor(rouletteRoot);
 
-        lootboxes = new Lootboxes();
-        lootboxesRoot = lootboxes.get();
-        lootboxesStage.addActor(lootboxesRoot);
-
-
         // store scene instances in map for scenemanager accesses and implicit ownership within Casino
         sceneInstanceMap.put(SceneManager.Scene.MENU, menu);
         sceneInstanceMap.put(SceneManager.Scene.BLACKJACK, blackjack);
@@ -124,7 +120,6 @@ public class Casino extends ApplicationAdapter {
         sceneInstanceMap.put(SceneManager.Scene.POKER, poker);
         sceneInstanceMap.put(SceneManager.Scene.SLOTS, slots);
         sceneInstanceMap.put(SceneManager.Scene.ROULETTE, roulette);
-        sceneInstanceMap.put(SceneManager.Scene.LOOTBOXES, lootboxes);
     }
 
     /**
@@ -141,20 +136,12 @@ public class Casino extends ApplicationAdapter {
 
     @Override
     public void render() {
-//        if (!assetsLoaded && assetManager.update())
-//            initialRenderAssets();
-
         startPostProcessing();
         draw();
         renderPostProcessing();
         // console always drawn on top, outside of post-processing (easier to read without effects, the text is small!)
         console.draw();
     }
-
-//    private void initialRenderAssets() {
-//        assetManager.load("card/card.jpg", Texture.class);
-//        assetsLoaded = true;
-//    }
 
     @Override
     public void dispose() {
@@ -190,7 +177,6 @@ public class Casino extends ApplicationAdapter {
                 case POKER -> renderPoker();
                 case SLOTS -> renderSlots();
                 case ROULETTE -> renderRoulette();
-                case LOOTBOXES -> renderLootboxes();
             }
         }
     }
@@ -261,12 +247,6 @@ public class Casino extends ApplicationAdapter {
         rouletteStage.draw();
     }
 
-    private void renderLootboxes() {
-        ScreenUtils.clear(Color.BLACK);
-        lootboxesStage.act(Gdx.graphics.getDeltaTime());
-        lootboxesStage.draw();
-    }
-
     public static ConsoleManager getActiveConsole() {
         return console;
     }
@@ -305,5 +285,9 @@ public class Casino extends ApplicationAdapter {
      */
     public TextureManager getTextureManagerInstance() {
         return textureManager;
+    }
+
+    public GlobalPlayerState getPlayerState() {
+        return playerState;
     }
 }
