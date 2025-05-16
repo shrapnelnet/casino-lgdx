@@ -3,6 +3,7 @@ package com.shr4pnel.casino.roulette;
 import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.base.Player;
 import com.shr4pnel.casino.roulette.RouletteGame;
+import com.shr4pnel.casino.roulette.RouletteWheel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class RouletteGame extends Game {
     private boolean containsThird;
     public RoulettePlayer player;
     public RouletteTable rouletteTable = new RouletteTable();
+    public RouletteWheel rouletteWheel = new RouletteWheel();
 
 
     public RouletteGame() {
@@ -141,7 +143,9 @@ public class RouletteGame extends Game {
         return false;
     }
 
-
+public int spinResult(){
+        return rouletteWheel.spin();
+}
 
 
 
