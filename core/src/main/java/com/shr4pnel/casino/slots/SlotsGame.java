@@ -1,11 +1,29 @@
 package com.shr4pnel.casino.slots;
+import com.shr4pnel.casino.util.AsciiArt.Fruits;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.base.Player;
 
 public class SlotsGame extends Game{
 
-    @Override
+private List<Fruits[]> reals = new ArrayList<>();
+private SlotsReal slotsReal = new SlotsReal();
+
+public SlotsGame(){
+   reals.add(slotsReal.getReal(10));
+   reals.add(slotsReal.getReal(10));
+   reals.add(slotsReal.getReal(10));
+
+
+}
+public List<Fruits[]> getReals(){
+   return reals;
+}
+
+@Override
     public Player getPlayer() {
        return null;
     }
@@ -15,6 +33,4 @@ public class SlotsGame extends Game{
        return null;
     }
 
-   
-    
-}
+   }

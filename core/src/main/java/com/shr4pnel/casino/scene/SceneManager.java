@@ -108,6 +108,7 @@ public class SceneManager {
 
                 Gdx.input.setInputProcessor(new SlotsInputProcessor(slotsInstance));
                 Casino.getActiveConsole().reset();
+                
             }
             case ROULETTE -> {
                 SoundEffectHelper.stopAll();
