@@ -51,7 +51,7 @@ public class Blackjack extends ManagedButtonGame {
 
         status.add(phase).row();
 
-        root.setDebug(true, true);
+        root.setDebug(false, true);
         root.setSize(800, 450);
         root.background("window");
 
