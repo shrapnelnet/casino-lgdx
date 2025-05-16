@@ -2,6 +2,7 @@ package com.shr4pnel.casino.roulette;
 
 import com.shr4pnel.casino.base.Game;
 import com.shr4pnel.casino.base.Player;
+import com.shr4pnel.casino.roulette.RouletteGame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ public class RouletteGame extends Game {
     private Map<RouletteBetType, Integer> betTypeToMult = new HashMap<>();
     private Map<RoulettePhase, String> phaseToString = new HashMap<>();
     private Map<RoulettePhase,RoulettePhase> nextPhaseMap = new HashMap<>();
+    private RoulettePhase phase = RoulettePhase.BET;
 
     private boolean containsEven;
     private boolean containsOdd;
@@ -43,6 +45,7 @@ public class RouletteGame extends Game {
         nextPhaseMap.put(RoulettePhase.SPIN, RoulettePhase.PAYOUT);
         nextPhaseMap.put(RoulettePhase.PAYOUT, RoulettePhase.BET);
 
+        player = new RoulettePlayer(true);
     }
 
 
@@ -66,12 +69,28 @@ public class RouletteGame extends Game {
 
     @Override
     public RoulettePlayer getPlayer() {
-        return (RoulettePlayer) player;
+        return player;
     }
 
     @Override
     public Player getAi() {
         return null;
+    }
+
+    public RoulettePhase getPhase() {
+        return phase;
+    }
+
+    public String getPhaseAsString() {
+        return phaseToString.get(phase);
+    }
+
+    public void setPhase(RoulettePhase phase) {
+        this.phase = phase;
+    }
+
+    public void nextPhase() {
+        phase = nextPhaseMap.get(phase);
     }
 
     public boolean isEven(int b) {
@@ -121,6 +140,7 @@ public class RouletteGame extends Game {
                 return true;
         return false;
     }
+
 
 
 
