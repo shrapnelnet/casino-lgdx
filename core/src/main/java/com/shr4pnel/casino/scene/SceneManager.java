@@ -42,7 +42,7 @@ public class SceneManager {
         prettyNameToScene.put("slots", Scene.SLOTS);
         prettyNameToScene.put("roulette", Scene.ROULETTE);
         prettyNameToScene.put("lootboxes", Scene.LOOTBOXES);
-        setActiveScene(Scene.SLOTS);
+        setActiveScene(Scene.INTRO);
     }
 
     /**
