@@ -13,9 +13,8 @@ private List<Fruits[]> reals = new ArrayList<>();
 private SlotsReal slotsReal = new SlotsReal();
 
 public SlotsGame(){
-   reals.add(slotsReal.getReal(10));
-   reals.add(slotsReal.getReal(10));
-   reals.add(slotsReal.getReal(10));
+   spin();
+
 
 
 }
@@ -23,6 +22,13 @@ public List<Fruits[]> getReals(){
    return reals;
 }
 
+public void spin(){
+    reals.clear();
+    reals.add(slotsReal.getReal(10));
+    reals.add(slotsReal.getReal(10));
+    reals.add(slotsReal.getReal(10));
+
+}
 @Override
     public Player getPlayer() {
        return null;
