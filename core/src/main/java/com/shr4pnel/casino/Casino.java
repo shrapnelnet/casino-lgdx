@@ -7,17 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.CrtEffect;
 import com.crashinvaders.vfx.effects.FilmGrainEffect;
 import com.crashinvaders.vfx.effects.GaussianBlurEffect;
-
 import com.shr4pnel.casino.audio.SoundEffectHelper;
 import com.shr4pnel.casino.console.ConsoleManager;
 import com.shr4pnel.casino.scene.*;
@@ -26,13 +23,13 @@ import com.shr4pnel.casino.util.TextureManager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimerTask;
 
 // if you're lost, what you're looking for is probably in here ;)
 
 /**
  * Application entry point
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
+ *
  * @author shrapnelnet
  * @since 0.1.0
  */
@@ -41,14 +38,14 @@ public class Casino extends ApplicationAdapter {
     private FitViewport viewport;
     private static ConsoleManager console;
     private final AssetManager assetManager = new AssetManager();
-    private Stage introStage, menuStage, blackjackStage, navigationStage,pokerStage, slotStage , rouletteStage, lootboxesStage;
+    private Stage introStage, menuStage, blackjackStage, navigationStage, pokerStage, slotStage, rouletteStage, lootboxesStage;
     private Window introRoot;
     private VfxManager vfxManager;
     private CrtEffect crtEffect;
     private FilmGrainEffect filmGrainEffect;
     private GaussianBlurEffect gaussianBlurEffect;
     private boolean hasIntroLoadSoundPlayed = false;
-    private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot, lootboxesRoot ;
+    private Table menuRoot, blackjackRoot, navigationRoot, pokerRoot, slotRoot, rouletteRoot, lootboxesRoot;
     private Blackjack blackjack;
     private Roulette roulette;
     private Menu menu;
@@ -64,16 +61,16 @@ public class Casino extends ApplicationAdapter {
         batch = new SpriteBatch();
         viewport = new FitViewport(800, 450);
         console = new ConsoleManager();
-        
-     
+
+
         introStage = new Stage(viewport);
         menuStage = new Stage(viewport);
         blackjackStage = new Stage(viewport);
         navigationStage = new Stage(viewport);
-        pokerStage= new Stage(viewport);
-        slotStage= new Stage(viewport);
-        rouletteStage= new Stage(viewport);
-        lootboxesStage= new Stage(viewport);
+        pokerStage = new Stage(viewport);
+        slotStage = new Stage(viewport);
+        rouletteStage = new Stage(viewport);
+        lootboxesStage = new Stage(viewport);
 
         // preload textures
         textureManager = new TextureManager();
@@ -110,9 +107,6 @@ public class Casino extends ApplicationAdapter {
         slots = new Slots();
         slotRoot = slots.get();
         slotStage.addActor(slotRoot);
-        
-       
-    
 
         roulette = new Roulette();
         rouletteRoot = roulette.get();
@@ -236,7 +230,7 @@ public class Casino extends ApplicationAdapter {
         blackjackStage.act(Gdx.graphics.getDeltaTime());
         blackjackStage.draw();
     }
-   
+
     private void renderMenu() {
         ScreenUtils.clear(Color.BLACK);
         menuStage.act(Gdx.graphics.getDeltaTime());
@@ -248,21 +242,25 @@ public class Casino extends ApplicationAdapter {
         navigationStage.act(Gdx.graphics.getDeltaTime());
         navigationStage.draw();
     }
+
     private void renderPoker() {
         ScreenUtils.clear(Color.BLACK);
         pokerStage.act(Gdx.graphics.getDeltaTime());
         pokerStage.draw();
     }
+
     private void renderSlots() {
         ScreenUtils.clear(Color.BLACK);
         slotStage.act(Gdx.graphics.getDeltaTime());
         slotStage.draw();
     }
+
     private void renderRoulette() {
         ScreenUtils.clear(Color.BLACK);
         rouletteStage.act(Gdx.graphics.getDeltaTime());
         rouletteStage.draw();
     }
+
     private void renderLootboxes() {
         ScreenUtils.clear(Color.BLACK);
         lootboxesStage.act(Gdx.graphics.getDeltaTime());
@@ -275,6 +273,7 @@ public class Casino extends ApplicationAdapter {
 
     /**
      * Get the casino as an object, useful for getting important info about active states
+     *
      * @return The running instance of casino
      */
     public static Casino getInstance() {
@@ -283,6 +282,7 @@ public class Casino extends ApplicationAdapter {
 
     /**
      * Get the instance of a game (stored in sceneInstanceMap)
+     *
      * @param s The scene to get
      * @return The scene, as a ManagedButtonGame
      */
@@ -292,6 +292,7 @@ public class Casino extends ApplicationAdapter {
 
     /**
      * Get the instance of a scene (stored in sceneInstanceMap)
+     *
      * @param s The scene to get
      * @return The scene, as a ManagedButtonScene
      */
