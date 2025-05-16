@@ -271,5 +271,6 @@ public class Blackjack extends ManagedButtonGame {
         BlackjackPlayer winner = game.getWinner();
         showWinner(winner);
         updatePhase();
+        setAllButtons(restart);
     }
 }
